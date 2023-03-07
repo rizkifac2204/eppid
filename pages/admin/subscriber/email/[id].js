@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Component, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { toast } from "react-toastify";
@@ -110,9 +110,7 @@ function EmailDetail() {
       <CardContent>
         <Grid container>
           <Grid item>
-            <Avatar sx={{ m: 1, bgcolor: "white" }}>
-              <Image src="/images/logo.png" layout="fill" alt="PPID" />
-            </Avatar>
+            <Avatar sx={{ m: 1, bgcolor: "white" }} src="/images/logo.png" />
           </Grid>
           <Grid item>
             <Typography variant="h4">{email.subjek}</Typography>

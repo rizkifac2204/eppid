@@ -755,7 +755,7 @@ const DataPermohonan = /*#__PURE__*/ react__WEBPACK_IMPORTED_MODULE_2___default(
                             children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_image__WEBPACK_IMPORTED_MODULE_1___default()), {
                                 src: "/images/logo-buttom.png",
                                 alt: "Logo",
-                                layout: "fill",
+                                fill: true,
                                 priority: true
                             })
                         }),

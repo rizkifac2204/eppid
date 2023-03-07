@@ -9,7 +9,7 @@ exports.modules = {
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({"src":"/_next/static/media/no-file.1bd1d555.png","height":253,"width":320,"blurDataURL":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAYAAAD+Bd/7AAAAqklEQVR42mNQ8Mtlct7wLdt544865w3fk4H0DiC+6Lzx5yUgrcQAJFa7bPq1FEhHuWz8OcF1618rl82/QoBiBS6bfq5kADIWAXEhUIcGUMLFZt5dXsfVHwSBkgxA3M0AlFwDxBOA1sQATSkHsh8C8WugdS5ABc0MQF1FQMZxoOR+F6CkC5ANpK8DTewH0nMZgAIWQMY5IN7nsvn3LCA/GSiZDKSnuWz+HQAAkZJzf8f/2FoAAAAASUVORK5CYII=","blurWidth":8,"blurHeight":6});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({"src":"/_next/static/media/no-file.1bd1d555.png","height":253,"width":320,"blurDataURL":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAGCAMAAADJ2y/JAAAAKlBMVEVDsvlDsflDsvlDsflDsvlEsvpMaXFDsvpDsflDsvlDsvpEs/tEsvpEs/uH5eN4AAAADnRSTlOHnq0Z0G8AkjF1QFjb+3qv5lsAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAxSURBVAiZFcpJEsAgDASx9ngFwv+/S0VngZI2gXJnVTXGjLUvkMV3F5yI0H/czrhvfxUlANXH5xWdAAAAAElFTkSuQmCC","blurWidth":8,"blurHeight":6});
 
 /***/ }),
 
@@ -102,12 +102,16 @@ function WithDynamicImage({ image , altText ="Pemohon"  }) {
         image
     ]);
     return /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-        children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_image__WEBPACK_IMPORTED_MODULE_3___default()), {
-            src: initImage,
-            alt: altText,
-            priority: true,
-            width: 280,
-            height: 0
+        children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("a", {
+            href: initImage.src,
+            target: "_blank",
+            children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_image__WEBPACK_IMPORTED_MODULE_3___default()), {
+                src: initImage,
+                alt: altText,
+                priority: true,
+                width: 280,
+                height: 200
+            })
         })
     });
 }

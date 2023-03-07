@@ -30,12 +30,7 @@ const BuktiPengajuanKeberatan = React.forwardRef(
         <Card sx={{ display: "none", displayPrint: "block", p: 2 }} ref={ref}>
           <Box sx={{ display: "flex", flexWrap: "nowrap", p: 2, mb: 2 }}>
             <Box sx={{ position: "relative", width: 100, height: 90, mr: 3 }}>
-              <Image
-                src="/images/logo-buttom.png"
-                alt="Logo"
-                layout="fill"
-                priority
-              />
+              <Image src="/images/logo-buttom.png" alt="Logo" fill priority />
             </Box>
             <Box>
               <Typography variant="h5">

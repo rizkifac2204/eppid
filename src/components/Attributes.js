@@ -74,7 +74,15 @@ export function WithDynamicImage({ image, altText = "Pemohon" }) {
 
   return (
     <>
-      <Image src={initImage} alt={altText} priority width={280} height={0} />
+      <a href={initImage.src} target="_blank">
+        <Image
+          src={initImage}
+          alt={altText}
+          priority
+          width={280}
+          height={200}
+        />
+      </a>
     </>
   );
 }

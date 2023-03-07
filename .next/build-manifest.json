@@ -5,8 +5,8 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/8rRmvMOH3_8f-J2n9JHZ4/_buildManifest.js",
-    "static/8rRmvMOH3_8f-J2n9JHZ4/_ssgManifest.js"
+    "static/A-CWiFpJ0Cw5M5RS41Eex/_buildManifest.js",
+    "static/A-CWiFpJ0Cw5M5RS41Eex/_ssgManifest.js"
   ],
   "rootMainFiles": [],
   "pages": {
@@ -21,7 +21,7 @@
       "static/chunks/5542-27bc0ea3aeb6a485.js",
       "static/chunks/967-b60855cfbf2bd717.js",
       "static/chunks/5567-1f85efa9784fc351.js",
-      "static/chunks/pages/index-d7778f803e3676d4.js"
+      "static/chunks/pages/index-676c2e9af6f08e18.js"
     ],
     "/_app": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
@@ -126,7 +126,7 @@
       "static/chunks/967-b60855cfbf2bd717.js",
       "static/chunks/1868-97bc1792e19fc8dd.js",
       "static/chunks/8987-379b05f0b95769e9.js",
-      "static/chunks/7452-a28c208042505d37.js",
+      "static/chunks/7452-a7e473509b4a1c27.js",
       "static/chunks/pages/admin/keberatan/[id]-21db0377d1e58f7d.js"
     ],
     "/admin/permohonan": [
@@ -142,7 +142,7 @@
       "static/chunks/3304-89c835f6ce9e307e.js",
       "static/chunks/967-b60855cfbf2bd717.js",
       "static/chunks/1699-d0e3deb1440b2e80.js",
-      "static/chunks/3424-6397e03980c3d0c2.js",
+      "static/chunks/3424-c37924de42b0a55d.js",
       "static/chunks/pages/admin/permohonan-6b2f2a4f82608aab.js"
     ],
     "/admin/permohonan/[id]": [
@@ -159,8 +159,8 @@
       "static/chunks/1235-a6d03a2eea030683.js",
       "static/chunks/1699-d0e3deb1440b2e80.js",
       "static/chunks/4627-db1d395453938c85.js",
-      "static/chunks/3424-6397e03980c3d0c2.js",
-      "static/chunks/pages/admin/permohonan/[id]-b39d62990d32d9a6.js"
+      "static/chunks/3424-c37924de42b0a55d.js",
+      "static/chunks/pages/admin/permohonan/[id]-fb0673b1cec3edfb.js"
     ],
     "/admin/permohonan/add": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
@@ -237,7 +237,7 @@
       "static/chunks/5382-7beb23933cd15f61.js",
       "static/chunks/3304-89c835f6ce9e307e.js",
       "static/chunks/39-32307a69ac3503ac.js",
-      "static/chunks/pages/admin/setting/trash-6bf752a7706b66eb.js"
+      "static/chunks/pages/admin/setting/trash-8f125c8c79eea2dc.js"
     ],
     "/admin/setting/users": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
@@ -314,7 +314,7 @@
       "static/chunks/1868-97bc1792e19fc8dd.js",
       "static/chunks/1235-a6d03a2eea030683.js",
       "static/chunks/3839-cb88128a56a6f22d.js",
-      "static/chunks/pages/admin/subscriber/email/[id]-606d258ec21de93f.js"
+      "static/chunks/pages/admin/subscriber/email/[id]-92083c001fa7bb79.js"
     ],
     "/admin/survey": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
@@ -350,7 +350,7 @@
       "static/chunks/967-b60855cfbf2bd717.js",
       "static/chunks/5567-1f85efa9784fc351.js",
       "static/chunks/360-3ab70f7ebaa0ff60.js",
-      "static/chunks/pages/cek-f66aace2ebd804a7.js"
+      "static/chunks/pages/cek-8d4c5a695340e5aa.js"
     ],
     "/dip": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
@@ -375,7 +375,7 @@
       "static/chunks/5542-27bc0ea3aeb6a485.js",
       "static/chunks/967-b60855cfbf2bd717.js",
       "static/chunks/2137-012ffc09ca365d93.js",
-      "static/chunks/7452-a28c208042505d37.js",
+      "static/chunks/7452-a7e473509b4a1c27.js",
       "static/chunks/pages/keberatan-9447f633626874ee.js"
     ],
     "/login": [
