@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
@@ -18,54 +19,45 @@ import { CustomToolbar } from "components/TableComponents";
 import EmailForm from "components/Subscriber/EmailForm";
 
 function Email() {
+  const queryClient = useQueryClient();
   const router = useRouter();
-  const [data, setData] = useState([]);
+  const { status } = router.query;
   const [pageSize, setPageSize] = useState(10);
   const [selected, setSelected] = useState([]);
 
-  const [subscriber, setSubscriber] = useState([]);
   const [openForm, setOpenForm] = useState(false);
   const [detail, setDetail] = useState({});
 
-  function fecthEmail(url) {
-    axios
-      .get(url)
-      .then((res) => {
-        setTimeout(() => {
-          setData((prevRows) => res.data);
-        });
-      })
-      .catch((err) => {
-        toast.error("Terjadi Kesalahan");
-      });
-  }
+  const {
+    data: emails,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: ["emails", status === "draft" ? { status: 0 } : { status: 1 }],
+    queryFn: ({ signal }) =>
+      axios
+        .get(
+          status === "draft"
+            ? `/api/subscriber/email?status=0`
+            : `/api/subscriber/email?status=1`,
+          { signal }
+        )
+        .then((res) => res.data)
+        .catch((err) => {
+          throw new Error(err.response.data.message);
+        }),
+  });
 
-  useEffect(() => {
-    let mounted = true;
-    setTimeout(() => {
-      setData((prev) => []);
-    });
-    const { status } = router.query;
-    if (!status) return fecthEmail(`/api/subscriber/email?status=1`);
-    const url =
-      status === "draft"
-        ? `/api/subscriber/email?status=0`
-        : `/api/subscriber/email?status=1`;
-    if (mounted) fecthEmail(url);
-
-    return () => (mounted = false);
-  }, [router]);
-
-  useEffect(() => {
-    axios
-      .get(`/api/subscriber`)
-      .then((res) => {
-        setSubscriber(res.data);
-      })
-      .catch((err) => {
-        toast.error("Terjadi Kesalahan");
-      });
-  }, []);
+  const { data: subscribers } = useQuery({
+    queryKey: ["subscribers"],
+    queryFn: ({ signal }) =>
+      axios
+        .get(`/api/subscriber`, { signal })
+        .then((res) => res.data)
+        .catch((err) => {
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   const handleFormClose = () => {
     setOpenForm(false);
@@ -82,7 +74,7 @@ function Email() {
         .delete(`/api/subscriber/email/${id}`)
         .then((res) => {
           setTimeout(() => {
-            setData((prev) => prev.filter((row) => row.id != id));
+            queryClient.invalidateQueries(["emails"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -111,9 +103,7 @@ function Email() {
         .delete(`/api/subscriber/email`, { data: selected })
         .then((res) => {
           setTimeout(() => {
-            setData((prevRows) =>
-              prevRows.filter((row) => !selected.includes(row.id))
-            );
+            queryClient.invalidateQueries(["emails"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -236,8 +226,9 @@ function Email() {
       </Button>
 
       <DataGrid
+        loading={isLoading || isFetching}
         autoHeight
-        rows={data}
+        rows={emails ? emails : []}
         columns={columns}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -259,7 +250,7 @@ function Email() {
       <EmailForm
         open={openForm}
         onClose={handleFormClose}
-        subscriber={subscriber}
+        subscriber={subscribers || []}
         detail={detail}
         router={router}
       />

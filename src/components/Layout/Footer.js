@@ -11,7 +11,7 @@ export default function Footer(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://bawaslu.go.id/">
+      <Link color="inherit" href="https://bawaslu.go.id" target={`_blank`}>
         Pusdatin Bawaslu Republik Indonesia
       </Link>{" "}
       {new Date().getFullYear()}

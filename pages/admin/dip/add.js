@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { useState, useContext } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 // MUI
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -21,7 +22,7 @@ import AddTaskIcon from "@mui/icons-material/AddTask";
 
 import AuthContext from "context/AuthContext";
 
-const handleSubmit = (values, setSubmitting, path) => {
+const handleSubmit = (values, setSubmitting, path, queryClient) => {
   const form = new FormData();
   for (var key in values) {
     // if (key === "file") {
@@ -43,6 +44,7 @@ const handleSubmit = (values, setSubmitting, path) => {
       },
     })
     .then((res) => {
+      queryClient.invalidateQueries(["dips"]);
       toast.update(toastProses, {
         render: res.data.message,
         type: "success",
@@ -81,6 +83,7 @@ const validationSchema = yup.object({
 });
 
 function DipAdd() {
+  const queryClient = useQueryClient();
   const { user } = useContext(AuthContext);
   const [initialValues, setInitialValues] = useState({
     sifat: "",
@@ -96,7 +99,12 @@ function DipAdd() {
     validationSchema: validationSchema,
     enableReinitialize: true,
     onSubmit: (values, { setSubmitting }) =>
-      handleSubmit(values, setSubmitting, `dip/${user.bawaslu_id}`),
+      handleSubmit(
+        values,
+        setSubmitting,
+        `dip/${user.bawaslu_id}`,
+        queryClient
+      ),
   });
 
   return (
@@ -150,8 +158,8 @@ function DipAdd() {
                   >
                     <MenuItem value="">Pilih</MenuItem>
                     <MenuItem value="Kelembagaan">Kelembagaan</MenuItem>
-                    <MenuItem value="Informasi Permilu">
-                      Informasi Permilu
+                    <MenuItem value="Informasi Pemilu">
+                      Informasi Pemilu
                     </MenuItem>
                   </Select>
                   <FormHelperText>

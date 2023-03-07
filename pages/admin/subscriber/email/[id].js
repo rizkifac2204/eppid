@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { Component, useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { toast } from "react-toastify";
 import DOMPurify from "isomorphic-dompurify";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -28,40 +29,41 @@ import SpeedDialAction from "@mui/material/SpeedDialAction";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+// Component
+import WaitLoadingComponent from "components/WaitLoadingComponent";
+import { FormatedDate } from "components/Attributes";
 
 function EmailDetail() {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const { id } = router.query;
-  const [detail, setDetail] = useState({});
   const [list, setList] = useState("");
-  const [loading, setLoading] = useState(true);
+
+  const {
+    data: email,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    enabled: !!id,
+    queryKey: ["email", id],
+    queryFn: ({ signal }) =>
+      axios
+        .get(`/api/subscriber/email/${id}`, { signal })
+        .then((res) => res.data)
+        .catch((err) => {
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   useEffect(() => {
-    if (id) {
-      const fetchDetail = () => {
-        axios
-          .get(`/api/subscriber/email/` + id)
-          .then((res) => {
-            setDetail(res.data);
-          })
-          .catch((err) => {
-            toast.error(err.response.data.message);
-            setTimeout(() => router.push("/admin/subscriber/email"), 2000);
-          })
-          .then(() => setLoading(false));
-      };
-      fetchDetail();
-    }
-  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (!detail.listPenerima) return;
-    const email = detail.listPenerima.map((item) => {
+    if (!email?.listPenerima) return;
+    const penerima = email.listPenerima.map((item) => {
       return item.email_subscriber;
     });
-    const text = email.join(", ");
+    const text = penerima.join(", ");
     setList(text);
-  }, [detail]);
+  }, [email]);
 
   const handleDelete = () => {
     const ask = confirm("Yakin Hapus Data?");
@@ -72,6 +74,7 @@ function EmailDetail() {
       axios
         .delete(`/api/subscriber/email/${id}`)
         .then((res) => {
+          queryClient.invalidateQueries(["emails"]);
           toast.update(toastProses, {
             render: res.data.message,
             type: "success",
@@ -95,6 +98,13 @@ function EmailDetail() {
     { icon: <DeleteIcon />, name: "Hapus", action: handleDelete },
   ];
 
+  if (isError) {
+    toast.error(error.message);
+    setTimeout(() => router.push("/admin/subscriber/email"), 1000);
+    return <></>;
+  }
+  if (isLoading) return <WaitLoadingComponent loading={isLoading} />;
+
   return (
     <Card>
       <CardContent>
@@ -105,7 +115,7 @@ function EmailDetail() {
             </Avatar>
           </Grid>
           <Grid item>
-            <Typography variant="h4">{detail.subjek}</Typography>
+            <Typography variant="h4">{email.subjek}</Typography>
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -123,34 +133,33 @@ function EmailDetail() {
                         <TableCell>: PPID Bawaslu</TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell>Provinsi</TableCell>
-                        <TableCell>: {detail.provinsi}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell>Kabupaten/Kota</TableCell>
-                        <TableCell>: {detail.kabupaten}</TableCell>
+                        <TableCell>Pengirim</TableCell>
+                        <TableCell>: {email.nama_bawaslu}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>Status</TableCell>
-                        <TableCell>: Terkirim</TableCell>
+                        <TableCell>
+                          : {Boolean(email.status) ? "Terkirim" : "Draft"}
+                        </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>Tanggal</TableCell>
                         <TableCell>
                           :{" "}
-                          {detail.sended_at &&
-                            new Date(detail.sended_at)
-                              .toISOString()
-                              .split("T")[0]}
+                          {email.sended_at ? (
+                            <FormatedDate tanggal={email.sended_at} />
+                          ) : (
+                            "-"
+                          )}
                         </TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>Subjek</TableCell>
-                        <TableCell>: {detail.subjek}</TableCell>
+                        <TableCell>: {email.subjek}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell>Penerima</TableCell>
-                        {detail.penerima === "All" ? (
+                        {email.penerima === "All" ? (
                           <TableCell>: Semua Subscriber</TableCell>
                         ) : (
                           <TableCell>
@@ -169,7 +178,7 @@ function EmailDetail() {
 
             <div
               dangerouslySetInnerHTML={{
-                __html: DOMPurify.sanitize(detail.isi),
+                __html: DOMPurify.sanitize(email.isi),
               }}
             ></div>
           </Grid>
@@ -178,8 +187,8 @@ function EmailDetail() {
       <Box p={2}>
         <Typography variant="caption">
           Dibuat :{" "}
-          {detail.created_at &&
-            new Date(detail.created_at).toISOString().split("T")[0]}
+          {email.created_at &&
+            new Date(email.created_at).toISOString().split("T")[0]}
         </Typography>
         <Box sx={{ transform: "translateZ(0px)", flexGrow: 1 }}>
           <SpeedDial

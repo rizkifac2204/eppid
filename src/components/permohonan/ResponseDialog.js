@@ -34,32 +34,8 @@ const handleSubmit = (values, props, setSubmitting) => {
   axios
     .post(`/api/permohonan/${values.permohonan_id}/responses`, postData)
     .then((res) => {
-      props.setDetail({
-        ...props.detail,
-        no_registrasi: values.no_registrasi,
-        status_permohonan: values.status_permohonan,
-      });
-      // ini tambahan dari halaman tabel
-      if (props.data) {
-        setTimeout(() => {
-          props.setData(
-            props.data.map((item) =>
-              item.id === values.permohonan_id
-                ? {
-                    ...item,
-                    no_registrasi: values.no_registrasi,
-                    status_permohonan: values.status_permohonan,
-                  }
-                : item
-            )
-          );
-        });
-      }
-      // ini tambahan dari halaman detail
-      if (props.responses) {
-        const joinedResponses = props.responses.concat(res.data.dataCallback);
-        props.setResponses(joinedResponses);
-      }
+      if (props.invalidateQueries) props.invalidateQueries();
+
       setTimeout(() => props.onClose(), 1000);
       toast.update(toastProses, {
         render: res.data.message,

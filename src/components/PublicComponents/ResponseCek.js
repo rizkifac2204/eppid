@@ -2,7 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
-import { FormatedDate, WithDynamicImage } from "components/Attributes";
+import { FormatedDate } from "components/Attributes";
 
 function getValueResponse(show = 0, obj, param, download) {
   if (!obj.responses) return "Tidak Tersedia";

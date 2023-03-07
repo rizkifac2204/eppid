@@ -1,9 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useReactToPrint } from "react-to-print";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 // MUI
+import LinearProgress from "@mui/material/LinearProgress";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import {
@@ -18,7 +20,7 @@ import PrintIcon from "@mui/icons-material/Print";
 import LocalLibraryIcon from "@mui/icons-material/LocalLibrary";
 // Components
 import { CustomToolbar } from "components/TableComponents";
-import ResponseDialog from "components/permohonan/ResponseDialog";
+import ResponseDialog from "components/Permohonan/ResponseDialog";
 import DataPermohonan from "components/PrintPage/DataPermohonan";
 
 function getFullReg(params) {
@@ -35,9 +37,29 @@ function getFullReg(params) {
   );
 }
 
+async function deleteData(id) {
+  if (id) {
+    try {
+      const res = await axios.delete(`/api/permohonan/${id}`);
+      return res.data;
+    } catch (err) {
+      throw new Error(err?.response?.data?.message || "Terjadi Kesalahan");
+    }
+  }
+}
+
+async function deleteDataSeleted(selected) {
+  try {
+    const res = await axios.delete(`/api/permohonan/`, { data: selected });
+    return res.data;
+  } catch (err) {
+    throw new Error(err?.response?.data?.message || "Terjadi Kesalahan");
+  }
+}
+
 function Permohonan() {
+  const queryClient = useQueryClient();
   const router = useRouter();
-  const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [selected, setSelected] = useState([]);
   // proses response
@@ -46,8 +68,23 @@ function Permohonan() {
   const [profileBawaslu, setProfileBawaslu] = useState({});
   const printRef = useRef();
 
+  const {
+    data: permohonans,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: ["permohonans"],
+    queryFn: ({ signal }) =>
+      axios
+        .get(`/api/permohonan`, { signal })
+        .then((res) => res.data)
+        .catch((err) => {
+          throw new Error(err.response.data.message);
+        }),
+  });
+
   // call for response dan print
-  const fetchProfileBawaslu = (id, callback) => {
+  function fetchProfileBawaslu(id, callback) {
     const toastProses = toast.loading("Menyiapkan Format...");
     axios
       .get(`/api/services/profileBawaslu?id=` + id)
@@ -65,68 +102,40 @@ function Permohonan() {
           autoClose: 2000,
         });
       });
-  };
+  }
 
-  const handleDeleteSelected = () => {
+  const { mutate: mutateDeleteSelected, isLoading: isLoadingDeleteSelected } =
+    useMutation({
+      mutationFn: deleteDataSeleted,
+      onSuccess: (data) => {
+        queryClient.invalidateQueries(["permohonans"]);
+        toast.success(data.message || "Sukses");
+      },
+      onError: (err) => {
+        console.log(err);
+        toast.error(err.message);
+      },
+    });
+
+  function handleDeleteSelected() {
     const ask = confirm("Yakin Hapus Data Terpilih?");
-    if (ask) {
-      const toastProses = toast.loading("Tunggu Sebentar...", {
-        autoClose: false,
-      });
-      axios
-        .delete(`/api/permohonan/`, { data: selected })
-        .then((res) => {
-          setTimeout(() => {
-            setData((prevRows) =>
-              prevRows.filter((row) => !selected.includes(row.id))
-            );
-          });
-          toast.update(toastProses, {
-            render: res.data.message,
-            type: "success",
-            isLoading: false,
-            autoClose: 2000,
-          });
-        })
-        .catch((err) => {
-          toast.update(toastProses, {
-            render: err.response.data.message,
-            type: "error",
-            isLoading: false,
-            autoClose: 2000,
-          });
-        });
-    }
-  };
-  const handleDeleteClick = (id) => {
+    if (ask) mutateDeleteSelected(selected);
+  }
+
+  const { mutate: mutateDelete, isLoading: isLoadingDelete } = useMutation({
+    mutationFn: deleteData,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["permohonans"]);
+      toast.success(data.message || "Sukses");
+    },
+    onError: (err, variables) => {
+      toast.error(err.message);
+    },
+  });
+  function handleDeleteClick(id) {
     const ask = confirm("Yakin Hapus Data?");
-    if (ask) {
-      const toastProses = toast.loading("Tunggu Sebentar...", {
-        autoClose: false,
-      });
-      axios
-        .delete(`/api/permohonan/` + id)
-        .then((res) => {
-          setTimeout(() => {
-            setData((prev) => prev.filter((row) => row.id != id));
-          });
-          toast.update(toastProses, {
-            render: res.data.message,
-            type: "success",
-            isLoading: false,
-            autoClose: 2000,
-          });
-        })
-        .catch((err) => {
-          toast.update(toastProses, {
-            render: err.response.data.message,
-            type: "error",
-            isLoading: false,
-            autoClose: 2000,
-          });
-        });
-    }
-  };
+    if (ask) mutateDelete(id);
+  }
 
   const processPrint = useReactToPrint({
     content: () => printRef.current,
@@ -134,9 +143,12 @@ function Permohonan() {
   const handlePrintClick = (values) => {
     setTimeout(() => {
       setDetail((prev) => values);
-    });
-    fetchProfileBawaslu(values.bawaslu_id, () => {
-      processPrint();
+      fetchProfileBawaslu(values.bawaslu_id, () => {
+        // beri timeout 1/2 detik agar loading image terlbih dahulu
+        setTimeout(() => {
+          processPrint();
+        }, 500);
+      });
     });
   };
 
@@ -153,24 +165,6 @@ function Permohonan() {
     });
     handleOpenResponse();
   };
-
-  useEffect(() => {
-    let mounted = true;
-    const fetchData = () => {
-      axios
-        .get(`/api/permohonan`)
-        .then((res) => {
-          setTimeout(() => {
-            setData((prev) => res.data);
-          });
-        })
-        .catch((err) => {
-          toast.error("Terjadi Kesalahan");
-        });
-    };
-    if (mounted) fetchData();
-    return () => (mounted = false);
-  }, []);
 
   const columns = [
     {
@@ -289,10 +283,14 @@ function Permohonan() {
 
   return (
     <>
+      {(isFetching || isLoadingDelete || isLoadingDeleteSelected) && (
+        <LinearProgress />
+      )}
       <Card height={630}>
         <DataGrid
+          loading={isLoading}
           autoHeight
-          rows={data}
+          rows={permohonans ? permohonans : []}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -327,9 +325,9 @@ function Permohonan() {
         onClose={handleCloseResponse}
         fullScreen={true}
         detail={detail}
-        setDetail={setDetail}
-        data={data}
-        setData={setData}
+        invalidateQueries={() =>
+          props.queryClient.invalidateQueries(["permohonans"])
+        }
       />
       <DataPermohonan
         ref={printRef}

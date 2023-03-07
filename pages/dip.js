@@ -1,6 +1,6 @@
-import { useRef, useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { useRef, useState, useCallback } from "react";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 // MUI
 import {
   DataGrid,
@@ -11,8 +11,6 @@ import {
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 // Components
 import { CustomPublicToolbar } from "components/TableComponents";
-// COMPONENTS
-import WaitLoadingComponent from "components/WaitLoadingComponent";
 import {
   TextFieldCustom,
   FormControlCustom,
@@ -21,10 +19,18 @@ import {
   MenuItemCustom,
 } from "components/PublicComponents/FieldCustom";
 
+function prepareData(dips = [], search) {
+  const items = dips.filter((item) => {
+    if (search === "") {
+      return item;
+    } else if (item.ringkasan?.toLowerCase().includes(search)) {
+      return item;
+    }
+  });
+  return items;
+}
+
 const Dip = () => {
-  const [data, setData] = useState([]);
-  const [curData, setCurData] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [pageSize, setPageSize] = useState(10);
   const [filter, setFilter] = useState({
     unit: "",
@@ -81,49 +87,33 @@ const Dip = () => {
     setFilter((prev) => tempData);
   };
 
-  function fetchData(f) {
-    const newData = [];
-    axios
-      .get(`/api/public/dip`, {
-        params: f,
-      })
-      .then((res) => {
-        res.data.map((item, index) => {
-          newData.push({ nomor: index + 1, ...item });
-        });
-        setData(newData);
-        setCurData(newData);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Terjadi Kesalahan");
-      })
-      .then(() => setLoading(false));
-  }
+  const {
+    data: dips,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    enabled:
+      filter.unit === "" ||
+      filter.unit === "Bawaslu Republik Indonesia" ||
+      Boolean(filter.unit === "Bawaslu Provinsi" && filter.id_prov) ||
+      Boolean(filter.unit === "Bawaslu" && filter.id_kabkota),
+    queryKey: ["public", "dips", filter],
+    queryFn: ({ signal }) =>
+      axios
+        .get(`/api/public/dip`, { signal, params: filter })
+        .then((res) => {
+          return res.data.map((item, index) => {
+            return { ...item, nomor: index + 1 };
+          });
+        })
+        .catch((err) => {
+          throw new Error(err.response.data.message);
+        }),
+  });
 
-  useEffect(() => {
-    setLoading(true);
-    if (filter.unit === "") return fetchData(filter);
-    if (filter.unit === "Bawaslu Republik Indonesia") return fetchData(filter);
-    if (filter.unit === "Bawaslu Provinsi") {
-      if (filter.id_prov) return fetchData(filter);
-    }
-    if (filter.unit === "Bawaslu") {
-      if (filter.id_kabkota) return fetchData(filter);
-    }
-  }, [filter]);
-
-  useEffect(() => {
-    if (!data) return;
-    const items = data.filter((item) => {
-      if (search === "") {
-        return item;
-      } else if (item.ringkasan?.toLowerCase().includes(search)) {
-        return item;
-      }
-    });
-    setCurData(items);
-  }, [search, data]);
+  const curData = useCallback(() => {
+    return prepareData(dips, search);
+  }, [dips, search]);
 
   const columns = [
     {
@@ -231,7 +221,6 @@ const Dip = () => {
                 <h2>DIP.</h2>
                 <p>Daftar Informasi Publik</p>
                 <br />
-
                 <div className="row">
                   <div className="col-xs-6 col-sm-4">
                     <FormControlCustom>
@@ -321,33 +310,29 @@ const Dip = () => {
                     />
                   </div>
                 </div>
-
                 <br />
                 <br />
-
-                <WaitLoadingComponent loading={loading} />
-                {!loading && (
-                  <DataGrid
-                    sx={{ fontSize: "1.3rem", mb: 10 }}
-                    autoHeight
-                    rows={curData}
-                    columns={columns}
-                    pageSize={pageSize}
-                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                    rowsPerPageOptions={[5, 10, 20]}
-                    components={{
-                      Toolbar: CustomPublicToolbar,
-                    }}
-                    initialState={{
-                      filter: {
-                        filterModel: {
-                          items: [],
-                          quickFilterLogicOperator: GridLinkOperator.Or,
-                        },
+                <DataGrid
+                  loading={isLoading || isFetching}
+                  sx={{ fontSize: "1.3rem", mb: 10 }}
+                  autoHeight
+                  rows={curData()}
+                  columns={columns}
+                  pageSize={pageSize}
+                  onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+                  rowsPerPageOptions={[5, 10, 20]}
+                  components={{
+                    Toolbar: CustomPublicToolbar,
+                  }}
+                  initialState={{
+                    filter: {
+                      filterModel: {
+                        items: [],
+                        quickFilterLogicOperator: GridLinkOperator.Or,
                       },
-                    }}
-                  />
-                )}
+                    },
+                  }}
+                />
               </div>
             </div>
             {/* .block-right-newsletter */}

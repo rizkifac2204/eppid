@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Card from "@mui/material/Card";
 import {
@@ -17,24 +18,21 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { CustomToolbar } from "components/TableComponents";
 
 function Users() {
+  const queryClient = useQueryClient();
   const router = useRouter();
-  const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [selected, setSelected] = useState([]);
 
-  useEffect(() => {
-    function fetchData() {
+  const { data: users, isLoading } = useQuery({
+    queryKey: ["users"],
+    queryFn: ({ signal }) =>
       axios
-        .get(`/api/setting/users`)
-        .then((res) => {
-          setData(res.data);
-        })
+        .get(`/api/setting/users`, { signal })
+        .then((res) => res.data)
         .catch((err) => {
-          console.log(err.response);
-        });
-    }
-    fetchData();
-  }, []);
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   const handleDeleteSelected = () => {
     const ask = confirm("Yakin Hapus Data Terpilih?");
@@ -46,9 +44,7 @@ function Users() {
         .delete(`/api/setting/users/`, { data: selected })
         .then((res) => {
           setTimeout(() => {
-            setData((prevRows) =>
-              prevRows.filter((row) => !selected.includes(row.id))
-            );
+            queryClient.invalidateQueries(["users"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -77,7 +73,7 @@ function Users() {
         .delete(`/api/setting/users/` + id)
         .then((res) => {
           setTimeout(() => {
-            setData((prev) => prev.filter((row) => row.id != id));
+            queryClient.invalidateQueries(["users"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -183,8 +179,9 @@ function Users() {
     <>
       <Card height={630}>
         <DataGrid
+          loading={isLoading}
           autoHeight
-          rows={data}
+          rows={users ? users : []}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

@@ -54,7 +54,7 @@ function stringAvatar(name) {
   };
 }
 
-function ResponseCard({ data, onDeleteResponse, responses, setResponses }) {
+function ResponseCard({ data, invalidateQueries }) {
   const deleteRespon = (id) => {
     const ask = confirm("Yakin Hapus Data?");
     if (ask) {
@@ -64,7 +64,7 @@ function ResponseCard({ data, onDeleteResponse, responses, setResponses }) {
       axios
         .delete(`/api/permohonan/` + data.permohonan_id + `/responses/` + id)
         .then((res) => {
-          onDeleteResponse(id);
+          invalidateQueries();
           toast.update(toastProses, {
             render: res.data.message,
             type: "success",
@@ -92,11 +92,7 @@ function ResponseCard({ data, onDeleteResponse, responses, setResponses }) {
       axios
         .put(`/api/permohonan/` + data.permohonan_id + `/responses/` + id)
         .then((res) => {
-          const updatedResponses = responses.map((item) => {
-            if (item.id == id) return { ...item, mailed: 1 };
-            return item;
-          });
-          setResponses(updatedResponses);
+          invalidateQueries();
           toast.update(toastProses, {
             render: res.data.message,
             type: "success",
@@ -228,8 +224,7 @@ function ResponseCard({ data, onDeleteResponse, responses, setResponses }) {
                       path="pemberitahuan"
                       namaFile="file_surat_pemberitahuan"
                       data={data}
-                      responses={responses}
-                      setResponses={setResponses}
+                      invalidateQueries={invalidateQueries}
                     />
                   </Paper>
                 </Grid>
@@ -244,8 +239,7 @@ function ResponseCard({ data, onDeleteResponse, responses, setResponses }) {
                       path="response"
                       namaFile="file_informasi"
                       data={data}
-                      responses={responses}
-                      setResponses={setResponses}
+                      invalidateQueries={invalidateQueries}
                     />
                   </Paper>
                 </Grid>

@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { toast } from "react-toastify";
+import { useQuery } from "@tanstack/react-query";
 // MUI
+import LinearProgress from "@mui/material/LinearProgress";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -38,10 +39,6 @@ const ExpandMore = styled((props) => {
 }));
 
 function Index() {
-  const [main, setMain] = useState({});
-  const [status, setStatus] = useState({});
-  const [unresponse, setUnresponse] = useState({});
-
   const [expandedOnline, setExpandedOnline] = useState(false);
   const [expandedOffline, setExpandedOffline] = useState(false);
 
@@ -52,261 +49,257 @@ function Index() {
     setExpandedOffline(!expandedOffline);
   };
 
-  useEffect(() => {
-    function getMain() {
+  const { data: main, isFetching: isFetchingMain } = useQuery({
+    queryKey: ["dashboard", "main"],
+    queryFn: ({ signal }) =>
       axios
-        .get(`api/dashboard/main`)
-        .then((res) => {
-          setMain(res.data);
-        })
+        .get(`/api/dashboard/main`, { signal })
+        .then((res) => res.data)
         .catch((err) => {
-          console.log(err.response);
-          toast.error("Terjadi Kesalahan");
-        });
-    }
-    getMain();
-  }, []);
+          throw new Error(err.response.data.message);
+        }),
+  });
 
-  useEffect(() => {
-    function getStatus() {
+  const { data: status, isFetching: isFetchingStatus } = useQuery({
+    queryKey: ["dashboard", "status"],
+    queryFn: ({ signal }) =>
       axios
-        .get(`api/dashboard/status`)
-        .then((res) => {
-          setStatus(res.data);
-        })
+        .get(`/api/dashboard/status`, { signal })
+        .then((res) => res.data)
         .catch((err) => {
-          console.log(err);
-          toast.error("Terjadi Kesalahan");
-        });
-    }
-    getStatus();
-  }, []);
+          throw new Error(err.response.data.message);
+        }),
+  });
 
-  useEffect(() => {
-    function getBelumRespon() {
+  const { data: unresponse, isFetching: isFetchingUnresponse } = useQuery({
+    queryKey: ["dashboard", "unresponse"],
+    queryFn: ({ signal }) =>
       axios
-        .get(`api/dashboard/belumRespon`)
-        .then((res) => {
-          setUnresponse(res.data);
-        })
+        .get(`/api/dashboard/belumRespon`, { signal })
+        .then((res) => res.data)
         .catch((err) => {
-          console.log(err);
-          toast.error("Terjadi Kesalahan");
-        });
-    }
-    getBelumRespon();
-  }, []);
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <Card
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box>
-            <CardContent>
-              <Typography component="div" variant="h5">
-                {main.jumlahUser}
-              </Typography>
-              <Typography variant="subtitle1" color="text.secondary">
-                Pengguna
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Link href="/admin/setting/users">
-                <SettingsSuggestIcon
-                  color="secondary"
-                  sx={{ cursor: "pointer" }}
-                />
-              </Link>
-            </CardActions>
-          </Box>
-          <Box
+    <>
+      {isFetchingMain || isFetchingStatus || isFetchingUnresponse ? (
+        <LinearProgress />
+      ) : null}
+
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card
             sx={{
               display: "flex",
-              flexWrap: "wrap",
-              alignContent: "center",
+              justifyContent: "space-between",
             }}
           >
-            <PeopleIcon color="info" sx={{ fontSize: 120 }} />
-          </Box>
-        </Card>
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <Card
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box>
-            <CardContent>
-              <Typography component="div" variant="h5">
-                {main.jumlahDip}
-              </Typography>
-              <Typography variant="subtitle1" color="text.secondary">
-                DIP
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Link href="/admin/dip">
-                <SettingsSuggestIcon
-                  color="secondary"
-                  sx={{ cursor: "pointer" }}
-                />
-              </Link>
-            </CardActions>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignContent: "center",
-            }}
-          >
-            <DataSaverOnIcon color="primary" sx={{ fontSize: 120 }} />
-          </Box>
-        </Card>
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <Card
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box>
-            <CardContent>
-              <Typography component="div" variant="h5">
-                {main.jumlahSurvey}
-              </Typography>
-              <Typography variant="subtitle1" color="text.secondary">
-                Survey
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Link href="/admin/survey">
-                <SettingsSuggestIcon
-                  color="secondary"
-                  sx={{ cursor: "pointer" }}
-                />
-              </Link>
-            </CardActions>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignContent: "center",
-            }}
-          >
-            <DynamicFormIcon color="warning" sx={{ fontSize: 120 }} />
-          </Box>
-        </Card>
-      </Grid>
-
-      <Grid item xs={12} sm={6} md={4} lg={3}>
-        <Card
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Box>
-            <CardContent>
-              <Typography component="div" variant="h5">
-                {main.jumlahKeberatan}
-              </Typography>
-              <Typography variant="subtitle1" color="text.secondary">
-                Keberatan
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Link href="/admin/keberatan">
-                <SettingsSuggestIcon
-                  color="secondary"
-                  sx={{ cursor: "pointer" }}
-                />
-              </Link>
-            </CardActions>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignContent: "center",
-            }}
-          >
-            <PanToolIcon color="error" sx={{ fontSize: 120 }} />
-          </Box>
-        </Card>
-      </Grid>
-
-      <Grid item xs={12}>
-        <Card sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
-          <Box>
-            <CardContent>
-              <Typography component="div" variant="h5">
-                {main.jumlahPermohonan}
-              </Typography>
-              <Typography variant="subtitle1" color="text.secondary">
-                Permohonan
-              </Typography>
-            </CardContent>
-            <CardActions disableSpacing>
-              <Link href="/admin/permohonan">
-                <SettingsSuggestIcon
-                  color="secondary"
-                  sx={{ cursor: "pointer" }}
-                />
-              </Link>
-              <ExpandMore
-                expand={expandedOnline}
-                onClick={handleExpandOnlineClick}
-                aria-expanded={expandedOnline}
-                aria-label="show more"
-              >
-                <ExpandMoreIcon />
-              </ExpandMore>
-            </CardActions>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              alignContent: "center",
-            }}
-          >
-            <WifiIcon color="success" sx={{ fontSize: 120 }} />
-          </Box>
-        </Card>
-        <DashboardCollapse
-          expanded={expandedOnline}
-          arr={status.result}
-          jumlah={main.jumlahPermohonan}
-        />
-      </Grid>
-
-      <Grid item xs={12}>
-        <Card>
-          <CardContent>
-            <Typography
-              sx={{ fontSize: 14 }}
-              color="text.secondary"
-              gutterBottom
+            <Box>
+              <CardContent>
+                <Typography component="div" variant="h5">
+                  {main?.jumlahUser}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Pengguna
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Link href="/admin/setting/users">
+                  <SettingsSuggestIcon
+                    color="secondary"
+                    sx={{ cursor: "pointer" }}
+                  />
+                </Link>
+              </CardActions>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignContent: "center",
+              }}
             >
-              Bawaslu Dengan Jumlah Permohonan Proses Terbanyak
-            </Typography>
-            <TableBelumRespon arr={unresponse} />
-          </CardContent>
-        </Card>
+              <PeopleIcon color="info" sx={{ fontSize: 120 }} />
+            </Box>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box>
+              <CardContent>
+                <Typography component="div" variant="h5">
+                  {main?.jumlahDip}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary">
+                  DIP
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Link href="/admin/dip">
+                  <SettingsSuggestIcon
+                    color="secondary"
+                    sx={{ cursor: "pointer" }}
+                  />
+                </Link>
+              </CardActions>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignContent: "center",
+              }}
+            >
+              <DataSaverOnIcon color="primary" sx={{ fontSize: 120 }} />
+            </Box>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box>
+              <CardContent>
+                <Typography component="div" variant="h5">
+                  {main?.jumlahSurvey}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Survey
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Link href="/admin/survey">
+                  <SettingsSuggestIcon
+                    color="secondary"
+                    sx={{ cursor: "pointer" }}
+                  />
+                </Link>
+              </CardActions>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignContent: "center",
+              }}
+            >
+              <DynamicFormIcon color="warning" sx={{ fontSize: 120 }} />
+            </Box>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Card
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Box>
+              <CardContent>
+                <Typography component="div" variant="h5">
+                  {main?.jumlahKeberatan}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Keberatan
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Link href="/admin/keberatan">
+                  <SettingsSuggestIcon
+                    color="secondary"
+                    sx={{ cursor: "pointer" }}
+                  />
+                </Link>
+              </CardActions>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignContent: "center",
+              }}
+            >
+              <PanToolIcon color="error" sx={{ fontSize: 120 }} />
+            </Box>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Card
+            sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}
+          >
+            <Box>
+              <CardContent>
+                <Typography component="div" variant="h5">
+                  {main?.jumlahPermohonan}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary">
+                  Permohonan
+                </Typography>
+              </CardContent>
+              <CardActions disableSpacing>
+                <Link href="/admin/permohonan">
+                  <SettingsSuggestIcon
+                    color="secondary"
+                    sx={{ cursor: "pointer" }}
+                  />
+                </Link>
+                <ExpandMore
+                  expand={expandedOnline}
+                  onClick={handleExpandOnlineClick}
+                  aria-expanded={expandedOnline}
+                  aria-label="show more"
+                >
+                  <ExpandMoreIcon />
+                </ExpandMore>
+              </CardActions>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignContent: "center",
+              }}
+            >
+              <WifiIcon color="success" sx={{ fontSize: 120 }} />
+            </Box>
+          </Card>
+          <DashboardCollapse
+            expanded={expandedOnline}
+            arr={status?.result}
+            jumlah={main?.jumlahPermohonan}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <Card>
+            <CardContent>
+              <Typography
+                sx={{ fontSize: 14 }}
+                color="text.secondary"
+                gutterBottom
+              >
+                Bawaslu Dengan Jumlah Permohonan Proses Terbanyak
+              </Typography>
+              <TableBelumRespon arr={unresponse ? unresponse : []} />
+            </CardContent>
+          </Card>
+        </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 }
 

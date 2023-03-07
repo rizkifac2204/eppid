@@ -16,7 +16,7 @@ const handleSubmit = (values, props) => {
   axios
     .post(`/api/subscriber`, values)
     .then((res) => {
-      props.fecthSubscriber();
+      props.invalidateQueries();
       setTimeout(() => props.onClose(), 1000);
       toast.update(toastProses, {
         render: res.data.message,

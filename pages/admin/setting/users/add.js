@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { useEffect, useState, useContext } from "react";
 import AuthContext from "context/AuthContext";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -20,11 +21,12 @@ import InputLabel from "@mui/material/InputLabel";
 // ICONS
 import AddTaskIcon from "@mui/icons-material/AddTask";
 
-const handleSubmit = (values, setSubmitting) => {
+const handleSubmit = (values, setSubmitting, queryClient) => {
   const toastProses = toast.loading("Tunggu Sebentar...", { autoClose: false });
   axios
     .post(`/api/setting/users`, values)
     .then((res) => {
+      queryClient.invalidateQueries(["users"]);
       toast.update(toastProses, {
         render: res.data.message,
         type: "success",
@@ -79,36 +81,22 @@ const validationSchema = yup.object({
 });
 
 function UsersAdd() {
+  const queryClient = useQueryClient();
   const { user: session } = useContext(AuthContext);
-  const [initialValues, setInitialValues] = useState({
-    level_bawaslu: "",
-    nama_admin: "",
-    telp_admin: "",
-    email_admin: "",
-    alamat_admin: "",
-    provinsi_id: "",
-    kabkota_id: "",
-    username: "",
-    password: "",
-    passwordConfirm: "",
-  });
-  const [levels, setLevels] = useState([]);
+
   const [provinsis, setProvinsis] = useState([]);
   const [kabkotas, setKabkotas] = useState([]);
 
-  useEffect(() => {
-    const fetchLevel = () => {
+  const { data: levels, isLoading: isLoadingLevels } = useQuery({
+    queryKey: ["services", "levels"],
+    queryFn: ({ signal }) =>
       axios
-        .get(`/api/services/levels`)
-        .then((res) => {
-          setLevels(res.data);
-        })
+        .get(`/api/services/levels`, { signal })
+        .then((res) => res.data)
         .catch((err) => {
-          console.log(err);
-        });
-    };
-    fetchLevel();
-  }, []);
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   const fetchProv = () => {
     axios
@@ -133,11 +121,22 @@ function UsersAdd() {
   };
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues: {
+      level_bawaslu: "",
+      nama_admin: "",
+      telp_admin: "",
+      email_admin: "",
+      alamat_admin: "",
+      provinsi_id: "",
+      kabkota_id: "",
+      username: "",
+      password: "",
+      passwordConfirm: "",
+    },
     validationSchema: validationSchema,
     enableReinitialize: true,
     onSubmit: (values, { setSubmitting }) =>
-      handleSubmit(values, setSubmitting),
+      handleSubmit(values, setSubmitting, queryClient),
   });
 
   useEffect(() => {
@@ -191,7 +190,8 @@ function UsersAdd() {
                     onBlur={formik.handleBlur}
                   >
                     <MenuItem value="">Pilih</MenuItem>
-                    {levels.length !== 0 &&
+                    {levels &&
+                      levels.length !== 0 &&
                       levels.map((item) => {
                         if (session && session.level === 1)
                           return (

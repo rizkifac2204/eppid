@@ -11,7 +11,6 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import DataArrayIcon from "@mui/icons-material/DataArray";
 import AddIcon from "@mui/icons-material/Add";
 import BubbleChartIcon from "@mui/icons-material/BubbleChart";
-import SafetyDividerIcon from "@mui/icons-material/SafetyDivider";
 import DataSaverOnIcon from "@mui/icons-material/DataSaverOn";
 import GavelIcon from "@mui/icons-material/Gavel";
 import ClassIcon from "@mui/icons-material/Class";

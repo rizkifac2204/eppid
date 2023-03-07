@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
@@ -15,7 +16,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import RestoreIcon from "@mui/icons-material/Restore";
 // Components
 import { CustomToolbar } from "components/TableComponents";
-import DetailPermohonan from "components/permohonan/DetailPermohonan";
+import DetailPermohonan from "components/Permohonan/DetailPermohonan";
 
 function getFullReg(params) {
   return (
@@ -32,23 +33,23 @@ function getFullReg(params) {
 }
 
 function Trash() {
-  const [data, setData] = useState([]);
+  const queryClient = useQueryClient();
   const [pageSize, setPageSize] = useState(10);
   const [selected, setSelected] = useState([]);
   // detail
   const [detail, setDetail] = useState({});
   const [openDetail, setOpenDetail] = useState(false);
-  useEffect(() => {
-    axios
-      .get(`/api/setting/trash`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error("Terjadi Kesalahan");
-      });
-  }, []);
+
+  const { data: trashs, isLoading } = useQuery({
+    queryKey: ["trashs"],
+    queryFn: ({ signal }) =>
+      axios
+        .get(`/api/setting/trash`, { signal })
+        .then((res) => res.data)
+        .catch((err) => {
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   const handleDelete = (detail) => {
     const ask = confirm("Hapus Data Secara Permanen?");
@@ -60,7 +61,7 @@ function Trash() {
         .post(`/api/setting/trash/`, { id: detail.id })
         .then((res) => {
           setTimeout(() => {
-            setData((prev) => prev.filter((row) => row.id != detail.id));
+            queryClient.invalidateQueries(["trashs"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -89,7 +90,8 @@ function Trash() {
         .put(`/api/setting/trash/`, { id: detail.id })
         .then((res) => {
           setTimeout(() => {
-            setData((prev) => prev.filter((row) => row.id != detail.id));
+            queryClient.invalidateQueries(["trashs"]);
+            queryClient.invalidateQueries(["permohonans"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -127,9 +129,7 @@ function Trash() {
         .delete(`/api/setting/trash/`, { data: { id: selected } })
         .then((res) => {
           setTimeout(() => {
-            setData((prevRows) =>
-              prevRows.filter((row) => !selected.includes(row.id))
-            );
+            queryClient.invalidateQueries(["trashs"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -264,8 +264,9 @@ function Trash() {
     <>
       <Card height={630}>
         <DataGrid
+          loading={isLoading}
           autoHeight
-          rows={data}
+          rows={trashs ? trashs : []}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

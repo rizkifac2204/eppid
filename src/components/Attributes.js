@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import axios from "axios";
 
+import defaultImage from "../../public/images/no-file.png";
+
 export function SetQRCode({ text }) {
   const [src, setSrc] = useState("");
   useEffect(() => {
@@ -44,7 +46,7 @@ export function NumberWithCommas({ number }) {
 }
 
 export function WithDynamicImage({ image, altText = "Pemohon" }) {
-  const [initImage, setInitImage] = useState("/images/no-file.png");
+  const [initImage, setInitImage] = useState(defaultImage);
 
   useEffect(() => {
     if (!image) return;
@@ -72,13 +74,7 @@ export function WithDynamicImage({ image, altText = "Pemohon" }) {
 
   return (
     <>
-      <Image
-        src={initImage}
-        alt={altText}
-        layout="fill"
-        objectFit="contain"
-        priority
-      />
+      <Image src={initImage} alt={altText} priority width={280} height={0} />
     </>
   );
 }

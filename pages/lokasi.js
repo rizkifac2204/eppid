@@ -2,11 +2,13 @@ import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import axios from "axios";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import { useQuery } from "@tanstack/react-query";
 // MUI
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const containerStyle = {
   width: "100%",
@@ -78,23 +80,24 @@ const DetailBox = ({ detail, modal }) => {
   );
 };
 
+function prepareData(data = [], filter) {
+  const items = data.filter((item) => {
+    if (filter === "") {
+      return item;
+    } else if (item.nama_bawaslu?.toLowerCase().includes(filter)) {
+      return item;
+    }
+  });
+  return items;
+}
+
 const Lokasi = () => {
-  const [data, setData] = useState([]);
-  const [curData, setCurData] = useState([]);
   const [detail, setDetail] = useState({});
   const [isMobile, setIsMobile] = useState(false);
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("");
   const dataRef = useRef(null);
   const mapRef = useRef(null);
-
-  const center = useMemo(
-    () => ({
-      lat: -6.187357167138786,
-      lng: 106.82278117734873,
-    }),
-    []
-  );
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -110,7 +113,6 @@ const Lokasi = () => {
   const onUnmount = useCallback(function callback(map) {
     setMap(null);
   }, []);
-
   const handleResize = () => {
     if (window.innerWidth < 1200) {
       setIsMobile(true);
@@ -118,31 +120,45 @@ const Lokasi = () => {
       setIsMobile(false);
     }
   };
+  const center = useMemo(
+    () => ({
+      lat: -6.187357167138786,
+      lng: 106.82278117734873,
+    }),
+    []
+  );
+
+  const {
+    data: lokasi,
+    isLoading,
+    isFetching,
+  } = useQuery({
+    queryKey: ["public", "lokasi", filter],
+    queryFn: ({ signal }) =>
+      axios
+        .get(`/api/public/dataBawaslu`, { signal })
+        .then((res) => {
+          return res.data.map((item, index) => {
+            return { ...item, nomor: index + 1 };
+          });
+        })
+        .catch((err) => {
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   useEffect(() => {
-    axios
-      .get(`/api/public/dataBawaslu`)
-      .then((res) => {
-        setData(() => res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
     window.addEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
-    if (!data) return;
-    const items = data.filter((item) => {
-      if (filter === "") {
-        return item;
-      } else if (item.nama_bawaslu?.toLowerCase().includes(filter)) {
-        return item;
-      }
-    });
-    if (filter === "") setDetail(data[0]);
-    setCurData(items);
-  }, [filter, data]);
+    if (!lokasi) return;
+    if (filter === "") setDetail(lokasi[0]);
+  }, [filter, lokasi]);
+
+  const curData = useCallback(() => {
+    return prepareData(lokasi, filter);
+  }, [lokasi, filter]);
 
   return (
     <>
@@ -155,8 +171,8 @@ const Lokasi = () => {
               <span className="point">Daftar</span> Bawaslu Se-Indonesia
             </h2>
             <p>
-              Berikut merupakan data-data dan lokasi Bawaslu RI, Bawaslu
-              Provinsi maupun Bawaslu Kabupaten/Kota Se-Indonesia
+              Berikut merupakan data lokasi Bawaslu RI, Bawaslu Provinsi dan
+              Bawaslu Kabupaten/Kota Se-Indonesia
             </p>
           </div>
           {/* .item-title */}
@@ -215,35 +231,36 @@ const Lokasi = () => {
                 </div>
               </div>
               <span className="border" />
+
+              {isLoading && isFetching && <LinearProgress />}
+
               <PerfectScrollbar>
                 <div className="col-md-12 no-padding box-scroll">
-                  {data.length === 0 && (
+                  {lokasi && lokasi.length === 0 && (
                     <div className="col-xs-12 location-bottom mr-5">
                       <h5>DATA TIDAK DITEMUKAN</h5>
                     </div>
                   )}
-                  {curData &&
-                    curData.length !== 0 &&
-                    curData.map((item, idk) => (
-                      <div
-                        key={idk}
-                        onClick={() => {
-                          setDetail(item);
-                          if (isMobile) setOpen(true);
-                        }}
-                        role="button"
-                        className="col-xs-12 col-sm-5 col-lg-5 location-bottom mr-5"
-                      >
-                        <h5>
-                          <i className="fa fa-university" /> {item.nama_bawaslu}
-                        </h5>
-                        <p className="color-info">
-                          {item.alamat_bawaslu}
-                          <br />
-                          {item.telp_bawaslu}
-                        </p>
-                      </div>
-                    ))}
+                  {curData().map((item, idk) => (
+                    <div
+                      key={idk}
+                      onClick={() => {
+                        setDetail(item);
+                        if (isMobile) setOpen(true);
+                      }}
+                      role="button"
+                      className="col-xs-12 col-sm-5 col-lg-5 location-bottom mr-5"
+                    >
+                      <h5>
+                        <i className="fa fa-university" /> {item.nama_bawaslu}
+                      </h5>
+                      <p className="color-info">
+                        {item.alamat_bawaslu}
+                        <br />
+                        {item.telp_bawaslu}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </PerfectScrollbar>
             </div>

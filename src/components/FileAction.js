@@ -39,7 +39,7 @@ function CircularProgressWithLabel(props) {
   );
 }
 
-function FileAction({ data, path, namaFile, responses, setResponses }) {
+function FileAction({ data, path, namaFile, invalidateQueries }) {
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -64,11 +64,7 @@ function FileAction({ data, path, namaFile, responses, setResponses }) {
       })
       .then((res) => {
         toast.success(res.data.message);
-        const updatedResponses = responses.map((item) => {
-          if (item.id == data.id) return { ...item, [namaFile]: res.data.file };
-          return item;
-        });
-        setResponses(updatedResponses);
+        invalidateQueries();
       })
       .catch((err) => {
         console.log(err);
@@ -90,11 +86,7 @@ function FileAction({ data, path, namaFile, responses, setResponses }) {
           params: { id, file, path, namaFile },
         })
         .then((res) => {
-          const updatedResponses = responses.map((item) => {
-            if (item.id == id) return { ...item, [namaFile]: null };
-            return item;
-          });
-          setResponses(updatedResponses);
+          invalidateQueries();
           toast.update(toastProses, {
             render: res.data.message,
             type: "success",

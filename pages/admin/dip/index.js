@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Card from "@mui/material/Card";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
@@ -14,8 +15,8 @@ import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import { CustomToolbar } from "components/TableComponents";
 
 function Dip() {
+  const queryClient = useQueryClient();
   const router = useRouter();
-  const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [selected, setSelected] = useState([]);
   const domain =
@@ -23,19 +24,16 @@ function Dip() {
       ? "http://localhost:3000/api/services/file/public/dip/"
       : process.env.NEXT_PUBLIC_HOST + "/api/services/file/public/dip/";
 
-  useEffect(() => {
-    function fetch() {
+  const { data: dips, isLoading } = useQuery({
+    queryKey: ["dips"],
+    queryFn: ({ signal }) =>
       axios
-        .get(`/api/dip`)
-        .then((res) => {
-          setData(res.data);
-        })
+        .get(`/api/dip`, { signal })
+        .then((res) => res.data)
         .catch((err) => {
-          toast.error("Terjadi Kesalahan");
-        });
-    }
-    fetch();
-  }, []);
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   const handleDelete = (id) => {
     const ask = confirm("Yakin Hapus Data?");
@@ -47,7 +45,7 @@ function Dip() {
         .delete(`/api/dip/` + id)
         .then((res) => {
           setTimeout(() => {
-            setData((prev) => prev.filter((row) => row.id != id));
+            queryClient.invalidateQueries(["dips"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -76,9 +74,7 @@ function Dip() {
         .delete(`/api/dip/`, { data: selected })
         .then((res) => {
           setTimeout(() => {
-            setData((prevRows) =>
-              prevRows.filter((row) => !selected.includes(row.id))
-            );
+            queryClient.invalidateQueries(["dips"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -175,8 +171,9 @@ function Dip() {
   return (
     <Card>
       <DataGrid
+        loading={isLoading}
         autoHeight
-        rows={data}
+        rows={dips ? dips : []}
         columns={columns}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

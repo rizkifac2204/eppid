@@ -669,7 +669,8 @@ function Footer(props) {
             "Copyright \xa9 ",
             /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_Link__WEBPACK_IMPORTED_MODULE_2___default()), {
                 color: "inherit",
-                href: "https://bawaslu.go.id/",
+                href: "https://bawaslu.go.id",
+                target: `_blank`,
                 children: "Pusdatin Bawaslu Republik Indonesia"
             }),
             " ",
@@ -704,7 +705,7 @@ __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __we
 /* harmony import */ var _mui_material_Box__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_mui_material_Box__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _mui_material_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(8442);
 /* harmony import */ var _mui_material_styles__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_mui_material_styles__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _Sidebar_Sidebar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(2691);
+/* harmony import */ var _Sidebar_Sidebar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(9884);
 /* harmony import */ var _Appbar_Appbar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(423);
 /* harmony import */ var _Appbar_DrawerSetting__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(8521);
 /* harmony import */ var _Breadcrumb__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(6835);
@@ -1325,7 +1326,7 @@ function PublicLayout({ children  }) {
 
 /***/ }),
 
-/***/ 2691:
+/***/ 9884:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1541,8 +1542,6 @@ var Add_default = /*#__PURE__*/__webpack_require__.n(Add_);
 ;// CONCATENATED MODULE: external "@mui/icons-material/BubbleChart"
 const BubbleChart_namespaceObject = require("@mui/icons-material/BubbleChart");
 var BubbleChart_default = /*#__PURE__*/__webpack_require__.n(BubbleChart_namespaceObject);
-;// CONCATENATED MODULE: external "@mui/icons-material/SafetyDivider"
-const SafetyDivider_namespaceObject = require("@mui/icons-material/SafetyDivider");
 // EXTERNAL MODULE: external "@mui/icons-material/DataSaverOn"
 var DataSaverOn_ = __webpack_require__(4580);
 var DataSaverOn_default = /*#__PURE__*/__webpack_require__.n(DataSaverOn_);
@@ -1553,7 +1552,6 @@ var Gavel_default = /*#__PURE__*/__webpack_require__.n(Gavel_namespaceObject);
 const Class_namespaceObject = require("@mui/icons-material/Class");
 var Class_default = /*#__PURE__*/__webpack_require__.n(Class_namespaceObject);
 ;// CONCATENATED MODULE: ./src/components/routes/index.js
-
 
 
 

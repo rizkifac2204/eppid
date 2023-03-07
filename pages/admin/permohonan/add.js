@@ -2,6 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import { useQueryClient } from "@tanstack/react-query";
 // MUI
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -22,11 +23,12 @@ import InputLabel from "@mui/material/InputLabel";
 // ICONS
 import AddTaskIcon from "@mui/icons-material/AddTask";
 
-const handleSubmit = (values, setSubmitting) => {
+const handleSubmit = (values, setSubmitting, queryClient) => {
   const toastProses = toast.loading("Tunggu Sebentar...", { autoClose: false });
   axios
     .post(`/api/permohonan`, values)
     .then((res) => {
+      queryClient.invalidateQueries(["permohonans"]);
       toast.update(toastProses, {
         render: res.data.message,
         type: "success",
@@ -113,6 +115,7 @@ const validationSchema = yup.object({
 });
 
 function PermohonanAdd() {
+  const queryClient = useQueryClient();
   const initialValues = {
     no_registrasi: "",
     tanggal_permohonan: "",
@@ -146,7 +149,7 @@ function PermohonanAdd() {
     initialValues: initialValues,
     validationSchema: validationSchema,
     onSubmit: (values, { setSubmitting }) =>
-      handleSubmit(values, setSubmitting),
+      handleSubmit(values, setSubmitting, queryClient),
   });
 
   return (

@@ -1,6 +1,7 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Card from "@mui/material/Card";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
@@ -11,25 +12,21 @@ import { CustomToolbar } from "components/TableComponents";
 import AuthContext from "context/AuthContext";
 
 function Regulasi() {
+  const queryClient = useQueryClient();
   const { user } = useContext(AuthContext);
-  const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [selected, setSelected] = useState([]);
 
-  function fecthRegulasi() {
-    axios
-      .get(`/api/setting/regulasi`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        toast.error("Terjadi Kesalahan");
-      });
-  }
-
-  useEffect(() => {
-    fecthRegulasi();
-  }, []);
+  const { data: regulasis, isLoading } = useQuery({
+    queryKey: ["regulasis"],
+    queryFn: ({ signal }) =>
+      axios
+        .get(`/api/setting/regulasi`, { signal })
+        .then((res) => res.data)
+        .catch((err) => {
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   const handleDelete = (id) => {
     const ask = confirm("Yakin Hapus Data?");
@@ -41,7 +38,7 @@ function Regulasi() {
         .delete(`/api/setting/regulasi/${id}`)
         .then((res) => {
           setTimeout(() => {
-            setData((prev) => prev.filter((row) => row.id != id));
+            queryClient.invalidateQueries(["regulasis"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -71,9 +68,7 @@ function Regulasi() {
         .delete(`/api/setting/regulasi`, { data: selected })
         .then((res) => {
           setTimeout(() => {
-            setData((prevRows) =>
-              prevRows.filter((row) => !selected.includes(row.id))
-            );
+            queryClient.invalidateQueries(["regulasis"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -153,8 +148,9 @@ function Regulasi() {
     <>
       <Card>
         <DataGrid
+          loading={isLoading}
           autoHeight
-          rows={data}
+          rows={regulasis ? regulasis : []}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

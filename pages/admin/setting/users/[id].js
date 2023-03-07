@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Grid from "@mui/material/Grid";
 //Component
@@ -12,30 +12,24 @@ import UserUpdateForm from "components/Userprofile/UserUpdateForm";
 function UsersDetail() {
   const router = useRouter();
   const { id } = router.query;
-  const [detail, setDetail] = useState({});
-  const [loading, setLoading] = useState(true);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (id) {
-      const fetchDetail = () => {
-        axios
-          .get(`/api/setting/users/` + id)
-          .then((res) => {
-            console.log(res.data);
-            setDetail(res.data);
-          })
-          .catch((err) => {
-            toast.error(err.response.data.message);
-            setTimeout(() => router.push("/admin/setting/users"), 1000);
-          })
-          .then(() => setLoading(false));
-      };
-      fetchDetail();
-    }
-    return () => {
-      // console.log("clear");
-    };
-  }, [id, router]);
+  const {
+    data: user,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    enabled: !!id,
+    queryKey: ["user", id],
+    queryFn: ({ signal }) =>
+      axios
+        .get(`/api/setting/users/${id}`, { signal })
+        .then((res) => res.data)
+        .catch((err) => {
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   const handleDelete = () => {
     const ask = confirm("Yakin Hapus Data?");
@@ -46,6 +40,7 @@ function UsersDetail() {
       axios
         .delete(`/api/setting/users/` + id)
         .then((res) => {
+          queryClient.invalidateQueries(["users"]);
           toast.update(toastProses, {
             render: res.data.message,
             type: "success",
@@ -65,17 +60,26 @@ function UsersDetail() {
     }
   };
 
+  if (isError) {
+    toast.error(error.message);
+    setTimeout(() => router.push("/admin/setting/users"), 1000);
+    return <></>;
+  }
+
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} md={3}>
-        <WaitLoadingComponent loading={loading} />
-        {!loading && (
-          <ProfileCard profile={detail} handleDelete={handleDelete} />
-        )}
+        <WaitLoadingComponent loading={isLoading} />
+        {user && <ProfileCard profile={user} handleDelete={handleDelete} />}
       </Grid>
       <Grid item xs={12} md={9}>
-        <WaitLoadingComponent loading={loading} />
-        {!loading && <UserUpdateForm profile={detail} setDetail={setDetail} />}
+        <WaitLoadingComponent loading={isLoading} />
+        {user && (
+          <UserUpdateForm
+            profile={user}
+            setDetail={() => queryClient.invalidateQueries(["user", id])}
+          />
+        )}
       </Grid>
     </Grid>
   );

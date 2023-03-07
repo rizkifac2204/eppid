@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
@@ -19,7 +19,7 @@ import InputLabel from "@mui/material/InputLabel";
 // ICONS
 import AddTaskIcon from "@mui/icons-material/AddTask";
 
-const handleSubmit = (values, setSubmitting) => {
+const handleSubmit = (values, setSubmitting, queryClient) => {
   const form = new FormData();
   for (var key in values) {
     // if (key === "file") {
@@ -47,6 +47,7 @@ const handleSubmit = (values, setSubmitting) => {
       },
     })
     .then((res) => {
+      queryClient.invalidateQueries(["regulasis"]);
       toast.update(toastProses, {
         render: res.data.message,
         type: "success",
@@ -77,7 +78,7 @@ const validationSchema = yup.object({
 });
 
 function RegulasiAdd() {
-  const [kategoris, setKategoris] = useState([]);
+  const queryClient = useQueryClient();
   const initialValues = {
     kategori_id: "",
     nomor: "",
@@ -86,23 +87,23 @@ function RegulasiAdd() {
     file: null,
   };
 
-  useEffect(() => {
-    axios
-      .get(`/api/setting/regulasi/kategori`)
-      .then((res) => {
-        setKategoris(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+  const { data: kategoris } = useQuery({
+    queryKey: ["regulasis", "kategoris"],
+    queryFn: ({ signal }) =>
+      axios
+        .get(`/api/setting/regulasi/kategori`, { signal })
+        .then((res) => res.data)
+        .catch((err) => {
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,
     enableReinitialize: true,
     onSubmit: (values, { setSubmitting }) =>
-      handleSubmit(values, setSubmitting),
+      handleSubmit(values, setSubmitting, queryClient),
   });
 
   return (
@@ -132,7 +133,8 @@ function RegulasiAdd() {
                     onBlur={formik.handleBlur}
                   >
                     <MenuItem value="">Pilih</MenuItem>
-                    {kategoris.length !== 0 &&
+                    {kategoris &&
+                      kategoris.length !== 0 &&
                       kategoris.map((item) => {
                         return (
                           <MenuItem key={item.id} value={item.id}>

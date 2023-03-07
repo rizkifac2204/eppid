@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Card from "@mui/material/Card";
 import {
@@ -16,24 +17,21 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { CustomToolbar } from "components/TableComponents";
 
 function Keberatan() {
+  const queryClient = useQueryClient();
   const router = useRouter();
-  const [data, setData] = useState([]);
   const [pageSize, setPageSize] = useState(10);
   const [selected, setSelected] = useState([]);
 
-  useEffect(() => {
-    function fetch() {
+  const { data: keberatans, isLoading } = useQuery({
+    queryKey: ["keberatans"],
+    queryFn: ({ signal }) =>
       axios
-        .get(`/api/keberatans`)
-        .then((res) => {
-          setData(res.data);
-        })
+        .get(`/api/keberatans`, { signal })
+        .then((res) => res.data)
         .catch((err) => {
-          toast.error("Terjadi Kesalahan");
-        });
-    }
-    fetch();
-  }, []);
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   const handleDelete = (id) => {
     const ask = confirm("Yakin Hapus Data?");
@@ -45,7 +43,7 @@ function Keberatan() {
         .delete(`/api/keberatans/` + id)
         .then((res) => {
           setTimeout(() => {
-            setData((prev) => prev.filter((row) => row.id != id));
+            queryClient.invalidateQueries(["keberatans"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -74,9 +72,7 @@ function Keberatan() {
         .delete(`/api/keberatans/`, { data: selected })
         .then((res) => {
           setTimeout(() => {
-            setData((prevRows) =>
-              prevRows.filter((row) => !selected.includes(row.id))
-            );
+            queryClient.invalidateQueries(["keberatans"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -149,8 +145,9 @@ function Keberatan() {
   return (
     <Card>
       <DataGrid
+        loading={isLoading}
         autoHeight
-        rows={data}
+        rows={keberatans ? keberatans : []}
         columns={columns}
         pageSize={pageSize}
         onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

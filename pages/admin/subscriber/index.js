@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
@@ -12,25 +13,21 @@ import { CustomToolbar } from "components/TableComponents";
 import SubscriberFormAdd from "components/Subscriber/SubscriberFormAdd";
 
 function Subscriber() {
-  const [data, setData] = useState([]);
+  const queryClient = useQueryClient();
   const [pageSize, setPageSize] = useState(10);
   const [selected, setSelected] = useState([]);
   const [openForm, setOpenForm] = useState(false);
 
-  function fecthSubscriber() {
-    axios
-      .get(`/api/subscriber`)
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        toast.error("Terjadi Kesalahan");
-      });
-  }
-
-  useEffect(() => {
-    fecthSubscriber();
-  }, []);
+  const { data: subscribers, isLoading } = useQuery({
+    queryKey: ["subscribers"],
+    queryFn: ({ signal }) =>
+      axios
+        .get(`/api/subscriber`, { signal })
+        .then((res) => res.data)
+        .catch((err) => {
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   const handleDelete = (id) => {
     const ask = confirm("Yakin Hapus Data?");
@@ -42,7 +39,7 @@ function Subscriber() {
         .put(`/api/subscriber`, { id })
         .then((res) => {
           setTimeout(() => {
-            setData((prev) => prev.filter((row) => row.id != id));
+            queryClient.invalidateQueries(["subscribers"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -71,9 +68,7 @@ function Subscriber() {
         .delete(`/api/subscriber`, { data: selected })
         .then((res) => {
           setTimeout(() => {
-            setData((prevRows) =>
-              prevRows.filter((row) => !selected.includes(row.id))
-            );
+            queryClient.invalidateQueries(["subscribers"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -149,8 +144,9 @@ function Subscriber() {
           Tambah Subscriber
         </Button>
         <DataGrid
+          loading={isLoading}
           autoHeight
-          rows={data}
+          rows={subscribers ? subscribers : []}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
@@ -173,7 +169,7 @@ function Subscriber() {
       <SubscriberFormAdd
         open={openForm}
         onClose={() => setOpenForm(false)}
-        fecthSubscriber={fecthSubscriber}
+        invalidateQueries={() => queryClient.invalidateQueries(["subscribers"])}
       />
     </>
   );

@@ -31,12 +31,10 @@ const TextPerubahanStatus = (tiket_number, email, status, reg_number, response)=
     <h3>${status}</h3>
     Nomor Registrasi <b>${reg_number}</b> <br/>
     Dengan pesan/response <b>${response}</b><br/>
-
     <p>
     Atau anda dapat melihat detail permohonan anda pada link berikut : <br />
     ${"https://ppidapp.bawaslu.go.id"}/cek?email=${email}&ticket=${tiket_number}
     </p>
-
     Terimakasih<br/>
     Bawaslu Terbuka, Pemilu Terpercaya<br/>
     --PPID Bawaslu`;
@@ -51,7 +49,6 @@ const TextPermohonanBaruKepadaAdmin = (tiket_number, email)=>{
     <p>
       Silakan Login Website PPID bawaslu kemudian pilih Menu Permohonan Informasi - Online Untuk Melihat Rincian Permohonan Informasi
     </p>
-
     Terimakasih<br/>
     Bawaslu Terbuka, Bawaslu Terpercaya<br/>
     --PPID Bawaslu`;
@@ -65,10 +62,8 @@ const TextPermohonanBaruKepadaPemohon = (tiket_number, email)=>{
     </p>
     Nomor Tiket <b>${tiket_number}</b><br/>
     Email <b>${email}</b><br/><br/>
-
     Atau anda dapat melihat detail permohonan anda pada link berikut : <br />
     ${"https://ppidapp.bawaslu.go.id"}/cek?email=${email}&ticket=${tiket_number} <br />
-
     Terimakasih<br/>
     Bawaslu Terbuka, Bawaslu Terpercaya<br/>
     --PPID Bawaslu`;
@@ -79,7 +74,6 @@ const TextKeberatanKepadaAdmin = (reg_number, email = "Tidak Diketahui", tiket =
       Hai Admin PPID, Ada Pengajuan Keberatan dari Nomor Registrasi <b>${reg_number} / ${tiket}</b> dengan email <b>${email}</b> <br/>
       Silakan Buka Website ppid bawaslu dan Login Sebagai Dengan Data Yang Sudah Diberikan Untuk Melihat Rincian Pengajuan Keberatan.
     </p>
-
     Terimakasih<br/>
     Bawaslu Terbuka, Bawaslu Terpercaya<br/>
     --PPID Bawaslu`;
@@ -91,24 +85,10 @@ const TextKeberatanKepadaPemohon = (reg_number, tiket = "Tidak Diketahui")=>{
       Pengajuan Keberatan yang anda ajukan akan segera kami tindak lanjut.
       PPID Bawaslu akan segera menghubungi melalui Nomor Telp atau Email sesuai data Permohonan dengan Nomor Registrasi <b>${reg_number} / ${tiket}</b>
     </p>
-
     Terimakasih<br/>
     Bawaslu Terbuka, Bawaslu Terpercaya<br/>
     --PPID Bawaslu`;
 };
-// const client = mailgun.client({
-//   username: "api",
-//   key: process.env.MAILGUN_API_KEY,
-// });
-// client.messages
-//   .create(process.env.MAILGUN_DOMAIN, messageData)
-//   .then((res) => {
-//     resolve(true);
-//   })
-//   .catch((err) => {
-//     getLogger.error(err);
-//     resolve(false);
-//   });
 const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {

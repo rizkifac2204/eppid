@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 // MUI
 import Card from "@mui/material/Card";
 import {
@@ -16,25 +17,22 @@ import { CustomToolbar } from "components/TableComponents";
 import DetailSurvey from "components/Survey/DetailSurvey";
 
 function Survey() {
-  const [data, setData] = useState([]);
+  const queryClient = useQueryClient();
   const [pageSize, setPageSize] = useState(10);
   const [selected, setSelected] = useState([]);
   const [detail, setDetail] = useState({});
   const [openDetail, setOpenDetail] = useState(false);
 
-  useEffect(() => {
-    function fetch() {
+  const { data: surveys, isLoading } = useQuery({
+    queryKey: ["surveys"],
+    queryFn: ({ signal }) =>
       axios
-        .get(`/api/surveys`)
-        .then((res) => {
-          setData(res.data);
-        })
+        .get(`/api/surveys`, { signal })
+        .then((res) => res.data)
         .catch((err) => {
-          toast.error("Terjadi Kesalahan");
-        });
-    }
-    fetch();
-  }, []);
+          throw new Error(err.response.data.message);
+        }),
+  });
 
   const handleDelete = (id) => {
     const ask = confirm("Yakin Hapus Data?");
@@ -46,7 +44,7 @@ function Survey() {
         .delete(`/api/surveys/` + id)
         .then((res) => {
           setTimeout(() => {
-            setData((prev) => prev.filter((row) => row.id != id));
+            queryClient.invalidateQueries(["surveys"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -75,9 +73,7 @@ function Survey() {
         .delete(`/api/surveys/`, { data: selected })
         .then((res) => {
           setTimeout(() => {
-            setData((prevRows) =>
-              prevRows.filter((row) => !selected.includes(row.id))
-            );
+            queryClient.invalidateQueries(["surveys"]);
           });
           toast.update(toastProses, {
             render: res.data.message,
@@ -251,8 +247,9 @@ function Survey() {
     <>
       <Card>
         <DataGrid
+          loading={isLoading}
           autoHeight
-          rows={data}
+          rows={surveys ? surveys : []}
           columns={columns}
           pageSize={pageSize}
           onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

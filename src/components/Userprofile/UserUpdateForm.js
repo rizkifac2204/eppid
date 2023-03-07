@@ -17,7 +17,7 @@ const handleSubmit = (values, setDetail) => {
   axios
     .put(`/api/setting/users/${values.id}`, values)
     .then((res) => {
-      setDetail({ ...values });
+      setDetail();
       toast.update(toastProses, {
         render: res.data.message,
         type: "success",
