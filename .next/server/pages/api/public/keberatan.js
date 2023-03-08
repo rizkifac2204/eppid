@@ -75,11 +75,13 @@ middlewares_PublicHandler__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_depend
         });
     }
 }).post(async (req, res)=>{
-    const { id , no_registrasi , tiket , email_pemohon , email_bawaslu , alasan_a , alasan_b , alasan_c , alasan_d , alasan_e , alasan_f , alasan_g , kasus_posisi  } = req.body;
+    const { id , no_registrasi , tiket , email_pemohon , email_bawaslu , nama_bawaslu , alasan_a , alasan_b , alasan_c , alasan_d , alasan_e , alasan_f , alasan_g , kasus_posisi  } = req.body;
     const curtime = (0,middlewares_PublicCondition__WEBPACK_IMPORTED_MODULE_4__/* .buatCurTime */ .sh)();
-    // setting email untuk admin dan pemohon
+    // setting email untuk pemohon
     const setMailOptionPemohon = (0,services_Email__WEBPACK_IMPORTED_MODULE_2__/* .mailOption */ .hW)(email_pemohon, "Pengajuan Keberatan PPID Bawaslu", (0,services_Email__WEBPACK_IMPORTED_MODULE_2__/* .TextKeberatanKepadaPemohon */ .pc)(no_registrasi, tiket));
-    const setMailOptionAdmin = (0,services_Email__WEBPACK_IMPORTED_MODULE_2__/* .mailOption */ .hW)(email_bawaslu, "Pengajuan Keberatan Permohonan Informasi Baru", (0,services_Email__WEBPACK_IMPORTED_MODULE_2__/* .TextKeberatanKepadaAdmin */ .qU)(no_registrasi, email_pemohon, tiket));
+    // setting email untuk admin
+    const emailadmintujuan = (0,middlewares_PublicCondition__WEBPACK_IMPORTED_MODULE_4__/* .emailAdmin */ ._w)(nama_bawaslu, email_bawaslu);
+    const setMailOptionAdmin = (0,services_Email__WEBPACK_IMPORTED_MODULE_2__/* .mailOption */ .hW)(emailadmintujuan, "Pengajuan Keberatan Permohonan Informasi Baru", (0,services_Email__WEBPACK_IMPORTED_MODULE_2__/* .TextKeberatanKepadaAdmin */ .qU)(no_registrasi, email_pemohon, tiket));
     const dataForInsert = {
         permohonan_id: id,
         alasan_a: alasan_a ? 1 : 0,

@@ -46,6 +46,7 @@ const handleSubmit = (
     tiket: data.tiket,
     email_pemohon: data.email_pemohon,
     email_bawaslu: data.email_bawaslu,
+    nama_bawaslu: data.nama_bawaslu,
   };
   const recaptchaValue = recaptchaRef.current.getValue();
   if (!recaptchaValue) {

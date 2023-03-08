@@ -5,14 +5,14 @@ import {
   buatTiket,
   buatCurTime,
   buatIDWill,
+  emailAdmin,
 } from "middlewares/PublicCondition";
 import sendingMail, {
   mailOption,
   TextPermohonanBaruKepadaAdmin,
   TextPermohonanBaruKepadaPemohon,
 } from "services/Email";
-const fs = require("fs"); // import * as fs from "fs";
-const path = require("path");
+const fs = require("fs");
 // const sharp = require("sharp");
 import getLogger from "middlewares/getLogger";
 
@@ -40,14 +40,6 @@ export default PublicHandler().post(
             type: "error",
           });
       }
-
-      // if (req.file) {
-      //   await sharp(req.file.path)
-      //     .resize({ width: 500 })
-      //     .jpeg({ quality: 90 })
-      //     .toFile(path.resolve(req.file.destination, `${req.file.filename}`));
-      //   fs.unlinkSync(req.file.path);
-      // }
 
       const filename = req.file
         ? req.file.filename
@@ -95,21 +87,24 @@ export default PublicHandler().post(
         identitas_pemohon: filename,
       };
 
-      // setting email untuk admin dan pemohon
+      // setting email untuk admin
       const getEmailBawaslu = await db("bawaslu")
         .where("id", bawaslu_id)
         .first();
+      const emailadmintujuan = emailAdmin(
+        kepada,
+        getEmailBawaslu.email_bawaslu
+      );
+      const setMailOptionAdmin = mailOption(
+        emailadmintujuan,
+        "Permohonan Informasi Baru",
+        TextPermohonanBaruKepadaAdmin(tiket, email_pemohon)
+      );
+      // setting email untuk pemohon
       const setMailOptionPemohon = mailOption(
         email_pemohon,
         "Permohonan Informasi PPID Bawaslu",
         TextPermohonanBaruKepadaPemohon(tiket, email_pemohon)
-      );
-      const setMailOptionAdmin = mailOption(
-        getEmailBawaslu.email_bawaslu
-          ? getEmailBawaslu.email_bawaslu
-          : process.env.EMAIL_USER,
-        "Permohonan Informasi Baru",
-        TextPermohonanBaruKepadaAdmin(tiket, email_pemohon)
       );
 
       // proses simpan data pemohon
@@ -157,8 +152,8 @@ export default PublicHandler().post(
         ...dataForInsertPermohonan,
         ...dataForInsertPemohon,
       };
-      // proses simpan
 
+      // proses simpan
       const proses = await db("permohonan").insert(dataForInsertPermohonan);
       // failed
       if (!proses) {
@@ -166,8 +161,9 @@ export default PublicHandler().post(
           message: "Gagal Mengirim Permohonan",
         });
       }
-      await sendingMail(setMailOptionPemohon);
+
       await sendingMail(setMailOptionAdmin);
+      await sendingMail(setMailOptionPemohon);
 
       // success
       res.json({
@@ -178,7 +174,6 @@ export default PublicHandler().post(
     } catch (error) {
       getLogger.error(error);
       return res.status(400).json({
-        currentData,
         message: "Gagal Mengirim Permohonan Informasi, Kesalahan Server",
       });
     }

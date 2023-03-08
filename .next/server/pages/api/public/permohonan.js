@@ -54,13 +54,6 @@ module.exports = require("fs");
 
 /***/ }),
 
-/***/ 1017:
-/***/ ((module) => {
-
-module.exports = require("path");
-
-/***/ }),
-
 /***/ 356:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
@@ -83,8 +76,7 @@ middlewares_PublicHandler__WEBPACK_IMPORTED_MODULE_1__ = (__webpack_async_depend
 
 
 
-const fs = __webpack_require__(7147); // import * as fs from "fs";
-const path = __webpack_require__(1017);
+const fs = __webpack_require__(7147);
 // const sharp = require("sharp");
 
 const config = {
@@ -105,13 +97,6 @@ const config = {
                 type: "error"
             });
         }
-        // if (req.file) {
-        //   await sharp(req.file.path)
-        //     .resize({ width: 500 })
-        //     .jpeg({ quality: 90 })
-        //     .toFile(path.resolve(req.file.destination, `${req.file.filename}`));
-        //   fs.unlinkSync(req.file.path);
-        // }
         const filename = req.file ? req.file.filename : req.body.identitas_pemohon;
         const { kepada , id_prov , id_kabkota , email_pemohon , nama_pemohon , telp_pemohon , pekerjaan_pemohon , pendidikan_pemohon , alamat_pemohon , rincian , tujuan , cara_terima , cara_dapat  } = req.body;
         const platform = "Website";
@@ -140,10 +125,12 @@ const config = {
             alamat_pemohon,
             identitas_pemohon: filename
         };
-        // setting email untuk admin dan pemohon
+        // setting email untuk admin
         const getEmailBawaslu = await (0,libs_db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)("bawaslu").where("id", bawaslu_id).first();
+        const emailadmintujuan = (0,middlewares_PublicCondition__WEBPACK_IMPORTED_MODULE_5__/* .emailAdmin */ ._w)(kepada, getEmailBawaslu.email_bawaslu);
+        const setMailOptionAdmin = (0,services_Email__WEBPACK_IMPORTED_MODULE_3__/* .mailOption */ .hW)(emailadmintujuan, "Permohonan Informasi Baru", (0,services_Email__WEBPACK_IMPORTED_MODULE_3__/* .TextPermohonanBaruKepadaAdmin */ .A_)(tiket, email_pemohon));
+        // setting email untuk pemohon
         const setMailOptionPemohon = (0,services_Email__WEBPACK_IMPORTED_MODULE_3__/* .mailOption */ .hW)(email_pemohon, "Permohonan Informasi PPID Bawaslu", (0,services_Email__WEBPACK_IMPORTED_MODULE_3__/* .TextPermohonanBaruKepadaPemohon */ ._e)(tiket, email_pemohon));
-        const setMailOptionAdmin = (0,services_Email__WEBPACK_IMPORTED_MODULE_3__/* .mailOption */ .hW)(getEmailBawaslu.email_bawaslu ? getEmailBawaslu.email_bawaslu : process.env.EMAIL_USER, "Permohonan Informasi Baru", (0,services_Email__WEBPACK_IMPORTED_MODULE_3__/* .TextPermohonanBaruKepadaAdmin */ .A_)(tiket, email_pemohon));
         // proses simpan data pemohon
         const cekDataPemohon = await (0,libs_db__WEBPACK_IMPORTED_MODULE_0__/* ["default"] */ .Z)("pemohon").where({
             email_pemohon: email_pemohon
@@ -183,7 +170,7 @@ const config = {
             }
         }
         // prepare data for callback
-        const currentData1 = {
+        const currentData = {
             ...dataForInsertPermohonan,
             ...dataForInsertPemohon
         };
@@ -195,18 +182,17 @@ const config = {
                 message: "Gagal Mengirim Permohonan"
             });
         }
-        await (0,services_Email__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .ZP)(setMailOptionPemohon);
         await (0,services_Email__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .ZP)(setMailOptionAdmin);
+        await (0,services_Email__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .ZP)(setMailOptionPemohon);
         // success
         res.json({
             message: "Berhasil Mengirim Permohonan",
-            currentData: currentData1,
+            currentData,
             type: "success"
         });
     } catch (error) {
         middlewares_getLogger__WEBPACK_IMPORTED_MODULE_4__/* ["default"].error */ .Z.error(error);
         return res.status(400).json({
-            currentData,
             message: "Gagal Mengirim Permohonan Informasi, Kesalahan Server"
         });
     }

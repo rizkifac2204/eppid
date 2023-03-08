@@ -7,6 +7,7 @@ exports.modules = {
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "_w": () => (/* binding */ emailAdmin),
 /* harmony export */   "bm": () => (/* binding */ buatIDWill),
 /* harmony export */   "sh": () => (/* binding */ buatCurTime),
 /* harmony export */   "th": () => (/* binding */ buatTiket)
@@ -51,6 +52,11 @@ const buatIDWill = (kepada, id_prov, id_kabkot)=>{
     }
     return id_will;
 };
+function emailAdmin(kepada, email) {
+    var email_master = process.env.EMAIL_MASTER ? process.env.EMAIL_MASTER : process.env.EMAIL_USER;
+    if (kepada === "Bawaslu Republik Indonesia") return email_master;
+    return email ? email : email_master;
+}
 
 
 /***/ })

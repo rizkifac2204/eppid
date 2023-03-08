@@ -5,7 +5,7 @@ import sendingMail, {
   TextKeberatanKepadaAdmin,
   TextKeberatanKepadaPemohon,
 } from "services/Email";
-import { buatCurTime } from "middlewares/PublicCondition";
+import { buatCurTime, emailAdmin } from "middlewares/PublicCondition";
 import getLogger from "middlewares/getLogger";
 
 export default PublicHandler()
@@ -52,6 +52,7 @@ export default PublicHandler()
       tiket,
       email_pemohon,
       email_bawaslu,
+      nama_bawaslu,
       alasan_a,
       alasan_b,
       alasan_c,
@@ -63,14 +64,17 @@ export default PublicHandler()
     } = req.body;
     const curtime = buatCurTime();
 
-    // setting email untuk admin dan pemohon
+    // setting email untuk pemohon
     const setMailOptionPemohon = mailOption(
       email_pemohon,
       "Pengajuan Keberatan PPID Bawaslu",
       TextKeberatanKepadaPemohon(no_registrasi, tiket)
     );
+
+    // setting email untuk admin
+    const emailadmintujuan = emailAdmin(nama_bawaslu, email_bawaslu);
     const setMailOptionAdmin = mailOption(
-      email_bawaslu,
+      emailadmintujuan,
       "Pengajuan Keberatan Permohonan Informasi Baru",
       TextKeberatanKepadaAdmin(no_registrasi, email_pemohon, tiket)
     );

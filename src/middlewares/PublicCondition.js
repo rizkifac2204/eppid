@@ -36,3 +36,11 @@ export const buatIDWill = (kepada, id_prov, id_kabkot) => {
   }
   return id_will;
 };
+
+export function emailAdmin(kepada, email) {
+  var email_master = process.env.EMAIL_MASTER
+    ? process.env.EMAIL_MASTER
+    : process.env.EMAIL_USER;
+  if (kepada === "Bawaslu Republik Indonesia") return email_master;
+  return email ? email : email_master;
+}

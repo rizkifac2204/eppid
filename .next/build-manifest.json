@@ -5,8 +5,8 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/A-CWiFpJ0Cw5M5RS41Eex/_buildManifest.js",
-    "static/A-CWiFpJ0Cw5M5RS41Eex/_ssgManifest.js"
+    "static/SgwRuTsSFKHaSKBBxdT9E/_buildManifest.js",
+    "static/SgwRuTsSFKHaSKBBxdT9E/_ssgManifest.js"
   ],
   "rootMainFiles": [],
   "pages": {
@@ -376,7 +376,7 @@
       "static/chunks/967-b60855cfbf2bd717.js",
       "static/chunks/2137-012ffc09ca365d93.js",
       "static/chunks/7452-a7e473509b4a1c27.js",
-      "static/chunks/pages/keberatan-9447f633626874ee.js"
+      "static/chunks/pages/keberatan-e41cdef82cb1925e.js"
     ],
     "/login": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
