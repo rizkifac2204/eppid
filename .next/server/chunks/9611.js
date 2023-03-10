@@ -22,6 +22,7 @@ __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __we
 /* harmony export */   "V2": () => (/* binding */ FormatedDate),
 /* harmony export */   "aU": () => (/* binding */ WithDynamicImage),
 /* harmony export */   "dl": () => (/* binding */ NumberWithCommas),
+/* harmony export */   "mO": () => (/* binding */ formatedDateFromEpoch),
 /* harmony export */   "xX": () => (/* binding */ CurrentDate)
 /* harmony export */ });
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(997);
@@ -42,6 +43,73 @@ axios__WEBPACK_IMPORTED_MODULE_4__ = (__webpack_async_dependencies__.then ? (awa
 
 
 
+function namaBulan(bulan, singkat = false) {
+    switch(bulan){
+        case 0:
+            bulan = singkat ? "Jan" : "Januari";
+            break;
+        case 1:
+            bulan = singkat ? "Feb" : "Februari";
+            break;
+        case 2:
+            bulan = singkat ? "Mar" : "Maret";
+            break;
+        case 3:
+            bulan = singkat ? "Apr" : "April";
+            break;
+        case 4:
+            bulan = singkat ? "Mei" : "Mei";
+            break;
+        case 5:
+            bulan = singkat ? "Jun" : "Juni";
+            break;
+        case 6:
+            bulan = singkat ? "Jul" : "Juli";
+            break;
+        case 7:
+            bulan = singkat ? "Agu" : "Agustus";
+            break;
+        case 8:
+            bulan = singkat ? "Sep" : "September";
+            break;
+        case 9:
+            bulan = singkat ? "Okt" : "Oktober";
+            break;
+        case 10:
+            bulan = singkat ? "Nov" : "November";
+            break;
+        case 11:
+            bulan = singkat ? "Des" : "Desember";
+            break;
+    }
+    return bulan;
+}
+function namaHari(hari) {
+    switch(hari){
+        case 0:
+            hari = "Minggu";
+            break;
+        case 1:
+            hari = "Senin";
+            break;
+        case 2:
+            hari = "Selasa";
+            break;
+        case 3:
+            hari = "Rabu";
+            break;
+        case 4:
+            hari = "Kamis";
+            break;
+        case 5:
+            hari = "Jumat";
+            break;
+        case 6:
+            hari = "Sabtu";
+            break;
+    }
+    return hari;
+}
 function SetQRCode({ text  }) {
     const [src, setSrc] = (0,react__WEBPACK_IMPORTED_MODULE_2__.useState)("");
     (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(()=>{
@@ -114,6 +182,15 @@ function WithDynamicImage({ image , altText ="Pemohon"  }) {
             })
         })
     });
+}
+function formatedDateFromEpoch(epoch, hari = false) {
+    epoch = new Date(epoch * 1000);
+    var tahun = epoch.getFullYear();
+    var bulan = namaBulan(epoch.getMonth(), true);
+    var tanggal = epoch.getDate();
+    const pukul = ("0" + epoch.getHours()).slice(-2) + ":" + ("0" + epoch.getMinutes()).slice(-2);
+    const showhari = hari ? `${namaHari(epoch.getDay())}, ` : "";
+    return showhari + tanggal + " " + bulan + " " + tahun + " - " + pukul;
 }
 
 __webpack_async_result__();

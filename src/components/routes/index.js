@@ -14,6 +14,7 @@ import BubbleChartIcon from "@mui/icons-material/BubbleChart";
 import DataSaverOnIcon from "@mui/icons-material/DataSaverOn";
 import GavelIcon from "@mui/icons-material/Gavel";
 import ClassIcon from "@mui/icons-material/Class";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 export const mainRoutes = [
   {
@@ -135,6 +136,7 @@ export const settingRoutes = [
         title: "Tambah",
         path: "/admin/setting/regulasi/add",
         icon: <AddIcon sx={{ fontSize: 12 }} />,
+        limit: [1],
       },
       {
         title: "Kategori",
@@ -142,6 +144,12 @@ export const settingRoutes = [
         icon: <ClassIcon sx={{ fontSize: 12 }} />,
       },
     ],
+  },
+  {
+    title: "Whatsapp",
+    path: "/admin/setting/whatsapp",
+    icon: <WhatsAppIcon />,
+    limit: [1],
   },
 ];
 

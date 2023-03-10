@@ -5,8 +5,8 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/SgwRuTsSFKHaSKBBxdT9E/_buildManifest.js",
-    "static/SgwRuTsSFKHaSKBBxdT9E/_ssgManifest.js"
+    "static/_vnhZ3QjeJ6TvWy3uCdbR/_buildManifest.js",
+    "static/_vnhZ3QjeJ6TvWy3uCdbR/_ssgManifest.js"
   ],
   "rootMainFiles": [],
   "pages": {
@@ -21,14 +21,14 @@
       "static/chunks/5542-27bc0ea3aeb6a485.js",
       "static/chunks/967-b60855cfbf2bd717.js",
       "static/chunks/5567-1f85efa9784fc351.js",
-      "static/chunks/pages/index-676c2e9af6f08e18.js"
+      "static/chunks/pages/index-12f7b113582d1148.js"
     ],
     "/_app": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
       "static/chunks/framework-ce84985cd166733a.js",
       "static/chunks/main-799c942d5e716d68.js",
       "static/css/0fef3b7ee1b51587.css",
-      "static/chunks/pages/_app-caa32a100f48474f.js"
+      "static/chunks/pages/_app-b484a2831d0df250.js"
     ],
     "/_error": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
@@ -126,7 +126,7 @@
       "static/chunks/967-b60855cfbf2bd717.js",
       "static/chunks/1868-97bc1792e19fc8dd.js",
       "static/chunks/8987-379b05f0b95769e9.js",
-      "static/chunks/7452-a7e473509b4a1c27.js",
+      "static/chunks/7452-9dd4739c758700e0.js",
       "static/chunks/pages/admin/keberatan/[id]-21db0377d1e58f7d.js"
     ],
     "/admin/permohonan": [
@@ -142,7 +142,7 @@
       "static/chunks/3304-89c835f6ce9e307e.js",
       "static/chunks/967-b60855cfbf2bd717.js",
       "static/chunks/1699-d0e3deb1440b2e80.js",
-      "static/chunks/3424-c37924de42b0a55d.js",
+      "static/chunks/3424-7c920930dfae3ff2.js",
       "static/chunks/pages/admin/permohonan-6b2f2a4f82608aab.js"
     ],
     "/admin/permohonan/[id]": [
@@ -159,7 +159,7 @@
       "static/chunks/1235-a6d03a2eea030683.js",
       "static/chunks/1699-d0e3deb1440b2e80.js",
       "static/chunks/4627-db1d395453938c85.js",
-      "static/chunks/3424-c37924de42b0a55d.js",
+      "static/chunks/3424-7c920930dfae3ff2.js",
       "static/chunks/pages/admin/permohonan/[id]-fb0673b1cec3edfb.js"
     ],
     "/admin/permohonan/add": [
@@ -237,7 +237,7 @@
       "static/chunks/5382-7beb23933cd15f61.js",
       "static/chunks/3304-89c835f6ce9e307e.js",
       "static/chunks/39-32307a69ac3503ac.js",
-      "static/chunks/pages/admin/setting/trash-8f125c8c79eea2dc.js"
+      "static/chunks/pages/admin/setting/trash-33072bfa377028e3.js"
     ],
     "/admin/setting/users": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
@@ -269,6 +269,15 @@
       "static/chunks/8271-e3b1a50cfa8db09d.js",
       "static/chunks/7848-1d444ce090957e4e.js",
       "static/chunks/pages/admin/setting/users/add-fcaa49cbaa609ff4.js"
+    ],
+    "/admin/setting/whatsapp": [
+      "static/chunks/webpack-dd8919a572f3efbe.js",
+      "static/chunks/framework-ce84985cd166733a.js",
+      "static/chunks/main-799c942d5e716d68.js",
+      "static/chunks/9004-804d4599f5c46843.js",
+      "static/chunks/6886-aac576c7ac535e3d.js",
+      "static/chunks/3304-89c835f6ce9e307e.js",
+      "static/chunks/pages/admin/setting/whatsapp-31d6d1d35edacc19.js"
     ],
     "/admin/setting/wilayah": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
@@ -314,7 +323,7 @@
       "static/chunks/1868-97bc1792e19fc8dd.js",
       "static/chunks/1235-a6d03a2eea030683.js",
       "static/chunks/3839-cb88128a56a6f22d.js",
-      "static/chunks/pages/admin/subscriber/email/[id]-92083c001fa7bb79.js"
+      "static/chunks/pages/admin/subscriber/email/[id]-b206434c780c441a.js"
     ],
     "/admin/survey": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
@@ -350,7 +359,7 @@
       "static/chunks/967-b60855cfbf2bd717.js",
       "static/chunks/5567-1f85efa9784fc351.js",
       "static/chunks/360-3ab70f7ebaa0ff60.js",
-      "static/chunks/pages/cek-8d4c5a695340e5aa.js"
+      "static/chunks/pages/cek-fe969c18b761e643.js"
     ],
     "/dip": [
       "static/chunks/webpack-dd8919a572f3efbe.js",
@@ -375,7 +384,7 @@
       "static/chunks/5542-27bc0ea3aeb6a485.js",
       "static/chunks/967-b60855cfbf2bd717.js",
       "static/chunks/2137-012ffc09ca365d93.js",
-      "static/chunks/7452-a7e473509b4a1c27.js",
+      "static/chunks/7452-9dd4739c758700e0.js",
       "static/chunks/pages/keberatan-e41cdef82cb1925e.js"
     ],
     "/login": [

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -11,14 +11,15 @@ import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 
-export const SingleLevel = ({ item }) => {
+export const SingleLevel = ({ item, userLevel }) => {
   const routes = useRouter();
   const isActive = () => routes.pathname === item.path;
+
+  if (item.limit && !item.limit.includes(userLevel)) return <></>;
   return (
     <Link href={item.path} passHref={true} legacyBehavior>
       <a>
-        <ListItem
-          button
+        <ListItemButton
           sx={{
             color: isActive() ? "primary.main" : "",
           }}
@@ -33,13 +34,13 @@ export const SingleLevel = ({ item }) => {
             </ListItemIcon>
           </Tooltip>
           <ListItemText primary={item.title} />
-        </ListItem>
+        </ListItemButton>
       </a>
     </Link>
   );
 };
 
-export const MultiLevel = ({ item }) => {
+export const MultiLevel = ({ item, userLevel }) => {
   const routes = useRouter();
   const firstPath = routes.pathname.split("/")[2];
 
@@ -49,10 +50,11 @@ export const MultiLevel = ({ item }) => {
   const handleClick = () => {
     setOpen((prev) => !prev);
   };
+
+  if (item.limit && !item.limit.includes(userLevel)) return <></>;
   return (
     <>
-      <ListItem
-        button
+      <ListItemButton
         onClick={handleClick}
         sx={{
           color: isActive() ? "primary.main" : "",
@@ -69,12 +71,12 @@ export const MultiLevel = ({ item }) => {
         </Tooltip>
         <ListItemText primary={item.title} />
         {open ? <ExpandLess /> : <ExpandMore />}
-      </ListItem>
+      </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding dense>
           {item.children.map((child, key) => (
             <Box key={key} sx={{ paddingLeft: 1, paddingY: 0 }}>
-              <MenuItem item={child} />
+              <MenuItem item={child} userLevel={userLevel} />
             </Box>
           ))}
         </List>
@@ -83,7 +85,7 @@ export const MultiLevel = ({ item }) => {
   );
 };
 
-export const MenuItem = ({ item }) => {
+export const MenuItem = ({ item, userLevel }) => {
   const Component = item.children ? MultiLevel : SingleLevel;
-  return <Component item={item} />;
+  return <Component item={item} userLevel={userLevel} />;
 };

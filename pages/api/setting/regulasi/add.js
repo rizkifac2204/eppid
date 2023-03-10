@@ -20,6 +20,14 @@ export default Handler().post(Upload().single("file"), async (req, res) => {
     const { filename } = req.file;
     const { kategori_id, nomor, judul, tentang } = req.body;
 
+    // hanya admin yang boleh input
+    if (req.session.user.level !== 1) {
+      DeleteUpload("./public/regulasi", filename);
+      return res.status(401).json({
+        message: "Anda Tidak Diizinkan Melakukan Aksi ini",
+      });
+    }
+
     const dataForInsert = {
       kategori_id,
       nomor,
@@ -35,11 +43,9 @@ export default Handler().post(Upload().single("file"), async (req, res) => {
       .andWhere("nomor", nomor);
     if (cek.length !== 0) {
       DeleteUpload("./public/regulasi", filename);
-      return res
-        .status(400)
-        .json({
-          message: `Nomor ${nomor} pada kategori tersebut sudah terdata`,
-        });
+      return res.status(400).json({
+        message: `Nomor ${nomor} pada kategori tersebut sudah terdata`,
+      });
     }
 
     const proses = await db("regulasi").insert(dataForInsert);

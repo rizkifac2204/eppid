@@ -21,6 +21,9 @@ export default async function middleware(req, res) {
 
     if (pathname === "/admin/setting")
       return NextResponse.redirect(`${origin}/admin/setting/wilayah`);
+
+    if (pathname === "/admin/setting/regulasi/add" && verifiedToken.level !== 1)
+      return NextResponse.redirect(`${origin}/admin/setting/regulasi`);
   }
 
   return NextResponse.next();

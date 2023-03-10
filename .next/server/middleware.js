@@ -5138,6 +5138,7 @@ async function middleware(req, res) {
     if (pathname.startsWith("/admin")) {
         if (!verifiedToken) return server.NextResponse.redirect(`${origin}/login`);
         if (pathname === "/admin/setting") return server.NextResponse.redirect(`${origin}/admin/setting/wilayah`);
+        if (pathname === "/admin/setting/regulasi/add" && verifiedToken.level !== 1) return server.NextResponse.redirect(`${origin}/admin/setting/regulasi`);
     }
     return server.NextResponse.next();
 }

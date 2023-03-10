@@ -175,6 +175,26 @@ const config = {
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
 
+/***/ }),
+
+/***/ 5920:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const knex = __webpack_require__(514)({
+    client: "mysql",
+    connection: {
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASS,
+        database: process.env.DB_NAME
+    }
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (knex);
+
+
 /***/ })
 
 };
@@ -184,7 +204,7 @@ __webpack_async_result__();
 var __webpack_require__ = require("../../../webpack-api-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [4383,1820,2679,8595], () => (__webpack_exec__(6722)));
+var __webpack_exports__ = __webpack_require__.X(0, [4383,1820,9733,8595], () => (__webpack_exec__(6722)));
 module.exports = __webpack_exports__;
 
 })();

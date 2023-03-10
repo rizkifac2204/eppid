@@ -1,7 +1,27 @@
 "use strict";
-exports.id = 3800;
-exports.ids = [3800];
+exports.id = 8882;
+exports.ids = [8882];
 exports.modules = {
+
+/***/ 5920:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const knex = __webpack_require__(514)({
+    client: "mysql",
+    connection: {
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASS,
+        database: process.env.DB_NAME
+    }
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (knex);
+
+
+/***/ }),
 
 /***/ 3800:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {

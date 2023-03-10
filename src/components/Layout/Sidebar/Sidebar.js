@@ -1,6 +1,8 @@
 // NEXT
+import { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import AuthContext from "context/AuthContext";
 // SCHROLL
 import PerfectScrollbar from "react-perfect-scrollbar";
 // MUI
@@ -74,6 +76,7 @@ const LogoContainer = styled("div", {
 }));
 
 function Sidebar(props) {
+  const { user } = useContext(AuthContext);
   return (
     <Drawer
       variant="permanent"
@@ -129,7 +132,7 @@ function Sidebar(props) {
               </ListSubheader>
             }
           >
-            <MainList />
+            <MainList userLevel={user?.level} />
           </List>
           <Divider />
           <List
@@ -141,7 +144,7 @@ function Sidebar(props) {
               </ListSubheader>
             }
           >
-            <DipList />
+            <DipList userLevel={user?.level} />
           </List>
           <Divider />
           <List
@@ -153,7 +156,7 @@ function Sidebar(props) {
               </ListSubheader>
             }
           >
-            <SettingList />
+            <SettingList userLevel={user?.level} />
           </List>
           <Divider />
           <List
@@ -165,7 +168,7 @@ function Sidebar(props) {
               </ListSubheader>
             }
           >
-            <ChartList />
+            <ChartList userLevel={user?.level} />
           </List>
         </Box>
       </PerfectScrollbar>

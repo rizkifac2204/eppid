@@ -36,8 +36,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var context_AuthContext__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(39);
 /* harmony import */ var _tanstack_react_query__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(9752);
 /* harmony import */ var _tanstack_react_query_devtools__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(9063);
-var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([components_Layout_Layout__WEBPACK_IMPORTED_MODULE_2__, react_toastify__WEBPACK_IMPORTED_MODULE_6__, context__WEBPACK_IMPORTED_MODULE_11__, context_AuthContext__WEBPACK_IMPORTED_MODULE_12__, _tanstack_react_query__WEBPACK_IMPORTED_MODULE_13__, _tanstack_react_query_devtools__WEBPACK_IMPORTED_MODULE_14__]);
-([components_Layout_Layout__WEBPACK_IMPORTED_MODULE_2__, react_toastify__WEBPACK_IMPORTED_MODULE_6__, context__WEBPACK_IMPORTED_MODULE_11__, context_AuthContext__WEBPACK_IMPORTED_MODULE_12__, _tanstack_react_query__WEBPACK_IMPORTED_MODULE_13__, _tanstack_react_query_devtools__WEBPACK_IMPORTED_MODULE_14__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+/* harmony import */ var context_whatsappContext__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(7425);
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([components_Layout_Layout__WEBPACK_IMPORTED_MODULE_2__, react_toastify__WEBPACK_IMPORTED_MODULE_6__, context__WEBPACK_IMPORTED_MODULE_11__, context_AuthContext__WEBPACK_IMPORTED_MODULE_12__, _tanstack_react_query__WEBPACK_IMPORTED_MODULE_13__, _tanstack_react_query_devtools__WEBPACK_IMPORTED_MODULE_14__, context_whatsappContext__WEBPACK_IMPORTED_MODULE_15__]);
+([components_Layout_Layout__WEBPACK_IMPORTED_MODULE_2__, react_toastify__WEBPACK_IMPORTED_MODULE_6__, context__WEBPACK_IMPORTED_MODULE_11__, context_AuthContext__WEBPACK_IMPORTED_MODULE_12__, _tanstack_react_query__WEBPACK_IMPORTED_MODULE_13__, _tanstack_react_query_devtools__WEBPACK_IMPORTED_MODULE_14__, context_whatsappContext__WEBPACK_IMPORTED_MODULE_15__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
 
 
@@ -61,6 +62,7 @@ next_router__WEBPACK_IMPORTED_MODULE_10___default().events.on("routeChangeError"
 
 
 const queryClient = new _tanstack_react_query__WEBPACK_IMPORTED_MODULE_13__.QueryClient();
+
 function MyApp({ Component , pageProps  }) {
     return /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
         children: [
@@ -79,30 +81,32 @@ function MyApp({ Component , pageProps  }) {
             /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("noscript", {
                 children: "Browser Anda Tidak Mendukung Javascript"
             }),
-            /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_tanstack_react_query__WEBPACK_IMPORTED_MODULE_13__.QueryClientProvider, {
-                client: queryClient,
-                children: [
-                    Component.auth ? /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(context_AuthContext__WEBPACK_IMPORTED_MODULE_12__/* .AuthContextProvider */ .H, {
-                        children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(context__WEBPACK_IMPORTED_MODULE_11__/* .ContextProvider */ .HQ, {
-                            children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(components_Layout_Layout__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z, {
+            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(context_whatsappContext__WEBPACK_IMPORTED_MODULE_15__/* .WhatsappContextProvider */ .FJ, {
+                children: /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(_tanstack_react_query__WEBPACK_IMPORTED_MODULE_13__.QueryClientProvider, {
+                    client: queryClient,
+                    children: [
+                        Component.auth ? /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(context_AuthContext__WEBPACK_IMPORTED_MODULE_12__/* .AuthContextProvider */ .H, {
+                            children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(context__WEBPACK_IMPORTED_MODULE_11__/* .ContextProvider */ .HQ, {
+                                children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(components_Layout_Layout__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .Z, {
+                                    children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(Component, {
+                                        ...pageProps
+                                    })
+                                })
+                            })
+                        }) : /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+                            children: Component.public ? /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(components_Layout_PublicLayout__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z, {
                                 children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(Component, {
                                     ...pageProps
                                 })
-                            })
-                        })
-                    }) : /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-                        children: Component.public ? /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(components_Layout_PublicLayout__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z, {
-                            children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(Component, {
+                            }) : /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(Component, {
                                 ...pageProps
                             })
-                        }) : /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(Component, {
-                            ...pageProps
+                        }),
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_tanstack_react_query_devtools__WEBPACK_IMPORTED_MODULE_14__.ReactQueryDevtools, {
+                            initialIsOpen: false
                         })
-                    }),
-                    /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_tanstack_react_query_devtools__WEBPACK_IMPORTED_MODULE_14__.ReactQueryDevtools, {
-                        initialIsOpen: false
-                    })
-                ]
+                    ]
+                })
             })
         ]
     });
@@ -705,14 +709,14 @@ __webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __we
 /* harmony import */ var _mui_material_Box__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_mui_material_Box__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var _mui_material_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(8442);
 /* harmony import */ var _mui_material_styles__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_mui_material_styles__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _Sidebar_Sidebar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(9884);
+/* harmony import */ var _Sidebar_Sidebar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(3574);
 /* harmony import */ var _Appbar_Appbar__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(423);
 /* harmony import */ var _Appbar_DrawerSetting__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(8521);
 /* harmony import */ var _Breadcrumb__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(6835);
 /* harmony import */ var _Footer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(9675);
 /* harmony import */ var context__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(4500);
-var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_Appbar_Appbar__WEBPACK_IMPORTED_MODULE_8__, _Appbar_DrawerSetting__WEBPACK_IMPORTED_MODULE_9__, context__WEBPACK_IMPORTED_MODULE_12__]);
-([_Appbar_Appbar__WEBPACK_IMPORTED_MODULE_8__, _Appbar_DrawerSetting__WEBPACK_IMPORTED_MODULE_9__, context__WEBPACK_IMPORTED_MODULE_12__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([_Sidebar_Sidebar__WEBPACK_IMPORTED_MODULE_7__, _Appbar_Appbar__WEBPACK_IMPORTED_MODULE_8__, _Appbar_DrawerSetting__WEBPACK_IMPORTED_MODULE_9__, context__WEBPACK_IMPORTED_MODULE_12__]);
+([_Sidebar_Sidebar__WEBPACK_IMPORTED_MODULE_7__, _Appbar_Appbar__WEBPACK_IMPORTED_MODULE_8__, _Appbar_DrawerSetting__WEBPACK_IMPORTED_MODULE_9__, context__WEBPACK_IMPORTED_MODULE_12__] = __webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__);
 
 
 // MUI
@@ -1326,55 +1330,26 @@ function PublicLayout({ children  }) {
 
 /***/ }),
 
-/***/ 9884:
+/***/ 2056:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 
 // EXPORTS
 __webpack_require__.d(__webpack_exports__, {
-  "Z": () => (/* binding */ Sidebar_Sidebar)
+  "pp": () => (/* binding */ ChartList),
+  "t7": () => (/* binding */ DipList),
+  "LZ": () => (/* binding */ MainList),
+  "gM": () => (/* binding */ SettingList)
 });
 
 // EXTERNAL MODULE: external "react/jsx-runtime"
 var jsx_runtime_ = __webpack_require__(997);
-// EXTERNAL MODULE: ./node_modules/next/link.js
-var next_link = __webpack_require__(1664);
-var link_default = /*#__PURE__*/__webpack_require__.n(next_link);
-// EXTERNAL MODULE: ./node_modules/next/image.js
-var next_image = __webpack_require__(5675);
-var image_default = /*#__PURE__*/__webpack_require__.n(next_image);
-// EXTERNAL MODULE: external "react-perfect-scrollbar"
-var external_react_perfect_scrollbar_ = __webpack_require__(5162);
-var external_react_perfect_scrollbar_default = /*#__PURE__*/__webpack_require__.n(external_react_perfect_scrollbar_);
-// EXTERNAL MODULE: external "@mui/material/Drawer"
-var Drawer_ = __webpack_require__(7898);
-var Drawer_default = /*#__PURE__*/__webpack_require__.n(Drawer_);
-// EXTERNAL MODULE: external "@mui/material/Button"
-var Button_ = __webpack_require__(3819);
-var Button_default = /*#__PURE__*/__webpack_require__.n(Button_);
-// EXTERNAL MODULE: external "@mui/material/Box"
-var Box_ = __webpack_require__(19);
-var Box_default = /*#__PURE__*/__webpack_require__.n(Box_);
-// EXTERNAL MODULE: external "@mui/material/Divider"
-var Divider_ = __webpack_require__(3646);
-var Divider_default = /*#__PURE__*/__webpack_require__.n(Divider_);
-;// CONCATENATED MODULE: external "@mui/material/List"
-const List_namespaceObject = require("@mui/material/List");
-var List_default = /*#__PURE__*/__webpack_require__.n(List_namespaceObject);
-;// CONCATENATED MODULE: external "@mui/material/ListSubheader"
-const ListSubheader_namespaceObject = require("@mui/material/ListSubheader");
-var ListSubheader_default = /*#__PURE__*/__webpack_require__.n(ListSubheader_namespaceObject);
-// EXTERNAL MODULE: external "@mui/material/styles"
-var styles_ = __webpack_require__(8442);
-;// CONCATENATED MODULE: external "@mui/icons-material/ArrowBackIosNewOutlined"
-const ArrowBackIosNewOutlined_namespaceObject = require("@mui/icons-material/ArrowBackIosNewOutlined");
-var ArrowBackIosNewOutlined_default = /*#__PURE__*/__webpack_require__.n(ArrowBackIosNewOutlined_namespaceObject);
 // EXTERNAL MODULE: external "react"
 var external_react_ = __webpack_require__(6689);
-;// CONCATENATED MODULE: external "@mui/material/ListItem"
-const ListItem_namespaceObject = require("@mui/material/ListItem");
-var ListItem_default = /*#__PURE__*/__webpack_require__.n(ListItem_namespaceObject);
+;// CONCATENATED MODULE: external "@mui/material/ListItemButton"
+const ListItemButton_namespaceObject = require("@mui/material/ListItemButton");
+var ListItemButton_default = /*#__PURE__*/__webpack_require__.n(ListItemButton_namespaceObject);
 ;// CONCATENATED MODULE: external "@mui/material/ListItemIcon"
 const ListItemIcon_namespaceObject = require("@mui/material/ListItemIcon");
 var ListItemIcon_default = /*#__PURE__*/__webpack_require__.n(ListItemIcon_namespaceObject);
@@ -1387,12 +1362,21 @@ var ExpandLess_default = /*#__PURE__*/__webpack_require__.n(ExpandLess_namespace
 // EXTERNAL MODULE: external "@mui/icons-material/ExpandMore"
 var ExpandMore_ = __webpack_require__(8148);
 var ExpandMore_default = /*#__PURE__*/__webpack_require__.n(ExpandMore_);
+// EXTERNAL MODULE: external "@mui/material/List"
+var List_ = __webpack_require__(4192);
+var List_default = /*#__PURE__*/__webpack_require__.n(List_);
+// EXTERNAL MODULE: ./node_modules/next/link.js
+var next_link = __webpack_require__(1664);
+var link_default = /*#__PURE__*/__webpack_require__.n(next_link);
 // EXTERNAL MODULE: external "@mui/material/Tooltip"
 var Tooltip_ = __webpack_require__(7229);
 var Tooltip_default = /*#__PURE__*/__webpack_require__.n(Tooltip_);
 // EXTERNAL MODULE: external "@mui/material/Collapse"
 var Collapse_ = __webpack_require__(3932);
 var Collapse_default = /*#__PURE__*/__webpack_require__.n(Collapse_);
+// EXTERNAL MODULE: external "@mui/material/Box"
+var Box_ = __webpack_require__(19);
+var Box_default = /*#__PURE__*/__webpack_require__.n(Box_);
 // EXTERNAL MODULE: external "next/router"
 var router_ = __webpack_require__(1853);
 ;// CONCATENATED MODULE: ./src/components/Layout/Sidebar/ListItem.js
@@ -1409,16 +1393,16 @@ var router_ = __webpack_require__(1853);
 
 
 
-const SingleLevel = ({ item  })=>{
+const SingleLevel = ({ item , userLevel  })=>{
     const routes = (0,router_.useRouter)();
     const isActive = ()=>routes.pathname === item.path;
+    if (item.limit && !item.limit.includes(userLevel)) return /*#__PURE__*/ jsx_runtime_.jsx(jsx_runtime_.Fragment, {});
     return /*#__PURE__*/ jsx_runtime_.jsx((link_default()), {
         href: item.path,
         passHref: true,
         legacyBehavior: true,
         children: /*#__PURE__*/ jsx_runtime_.jsx("a", {
-            children: /*#__PURE__*/ (0,jsx_runtime_.jsxs)((ListItem_default()), {
-                button: true,
+            children: /*#__PURE__*/ (0,jsx_runtime_.jsxs)((ListItemButton_default()), {
                 sx: {
                     color: isActive() ? "primary.main" : ""
                 },
@@ -1441,7 +1425,7 @@ const SingleLevel = ({ item  })=>{
         })
     });
 };
-const MultiLevel = ({ item  })=>{
+const MultiLevel = ({ item , userLevel  })=>{
     const routes = (0,router_.useRouter)();
     const firstPath = routes.pathname.split("/")[2];
     const isActive = ()=>firstPath === item.title.toLowerCase();
@@ -1449,10 +1433,10 @@ const MultiLevel = ({ item  })=>{
     const handleClick = ()=>{
         setOpen((prev)=>!prev);
     };
+    if (item.limit && !item.limit.includes(userLevel)) return /*#__PURE__*/ jsx_runtime_.jsx(jsx_runtime_.Fragment, {});
     return /*#__PURE__*/ (0,jsx_runtime_.jsxs)(jsx_runtime_.Fragment, {
         children: [
-            /*#__PURE__*/ (0,jsx_runtime_.jsxs)((ListItem_default()), {
-                button: true,
+            /*#__PURE__*/ (0,jsx_runtime_.jsxs)((ListItemButton_default()), {
                 onClick: handleClick,
                 sx: {
                     color: isActive() ? "primary.main" : ""
@@ -1488,7 +1472,8 @@ const MultiLevel = ({ item  })=>{
                                 paddingY: 0
                             },
                             children: /*#__PURE__*/ jsx_runtime_.jsx(MenuItem, {
-                                item: child
+                                item: child,
+                                userLevel: userLevel
                             })
                         }, key))
                 })
@@ -1496,10 +1481,11 @@ const MultiLevel = ({ item  })=>{
         ]
     });
 };
-const MenuItem = ({ item  })=>{
+const MenuItem = ({ item , userLevel  })=>{
     const Component = item.children ? MultiLevel : SingleLevel;
     return /*#__PURE__*/ jsx_runtime_.jsx(Component, {
-        item: item
+        item: item,
+        userLevel: userLevel
     });
 };
 
@@ -1551,7 +1537,11 @@ var Gavel_default = /*#__PURE__*/__webpack_require__.n(Gavel_namespaceObject);
 ;// CONCATENATED MODULE: external "@mui/icons-material/Class"
 const Class_namespaceObject = require("@mui/icons-material/Class");
 var Class_default = /*#__PURE__*/__webpack_require__.n(Class_namespaceObject);
+;// CONCATENATED MODULE: external "@mui/icons-material/WhatsApp"
+const WhatsApp_namespaceObject = require("@mui/icons-material/WhatsApp");
+var WhatsApp_default = /*#__PURE__*/__webpack_require__.n(WhatsApp_namespaceObject);
 ;// CONCATENATED MODULE: ./src/components/routes/index.js
+
 
 
 
@@ -1726,7 +1716,10 @@ const settingRoutes = [
                     sx: {
                         fontSize: 12
                     }
-                })
+                }),
+                limit: [
+                    1
+                ]
             },
             {
                 title: "Kategori",
@@ -1737,6 +1730,14 @@ const settingRoutes = [
                     }
                 })
             }
+        ]
+    },
+    {
+        title: "Whatsapp",
+        path: "/admin/setting/whatsapp",
+        icon: /*#__PURE__*/ jsx_runtime_.jsx((WhatsApp_default()), {}),
+        limit: [
+            1
         ]
     }
 ];
@@ -1757,29 +1758,79 @@ const chartRoutes = [
 
 
 
-const MainList = ()=>{
+const MainList = ({ userLevel  })=>{
+    if (!userLevel) return /*#__PURE__*/ jsx_runtime_.jsx(jsx_runtime_.Fragment, {});
     return mainRoutes.map((item)=>/*#__PURE__*/ jsx_runtime_.jsx(MenuItem, {
-            item: item
+            item: item,
+            userLevel: userLevel
         }, item.title));
 };
-const SettingList = ()=>{
+const SettingList = ({ userLevel  })=>{
+    if (!userLevel) return /*#__PURE__*/ jsx_runtime_.jsx(jsx_runtime_.Fragment, {});
     return settingRoutes.map((item)=>/*#__PURE__*/ jsx_runtime_.jsx(MenuItem, {
-            item: item
+            item: item,
+            userLevel: userLevel
         }, item.title));
 };
-const ChartList = ()=>{
+const ChartList = ({ userLevel  })=>{
+    if (!userLevel) return /*#__PURE__*/ jsx_runtime_.jsx(jsx_runtime_.Fragment, {});
     return chartRoutes.map((item)=>/*#__PURE__*/ jsx_runtime_.jsx(MenuItem, {
-            item: item
+            item: item,
+            userLevel: userLevel
         }, item.title));
 };
-const DipList = ()=>{
+const DipList = ({ userLevel  })=>{
+    if (!userLevel) return /*#__PURE__*/ jsx_runtime_.jsx(jsx_runtime_.Fragment, {});
     return dipRoutes.map((item)=>/*#__PURE__*/ jsx_runtime_.jsx(MenuItem, {
-            item: item
+            item: item,
+            userLevel: userLevel
         }, item.title));
 };
 
-;// CONCATENATED MODULE: ./src/components/Layout/Sidebar/Sidebar.js
+
+/***/ }),
+
+/***/ 3574:
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.a(module, async (__webpack_handle_async_dependencies__, __webpack_async_result__) => { try {
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(997);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6689);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1664);
+/* harmony import */ var next_link__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(next_link__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var next_image__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(5675);
+/* harmony import */ var next_image__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(next_image__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var context_AuthContext__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(39);
+/* harmony import */ var react_perfect_scrollbar__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(5162);
+/* harmony import */ var react_perfect_scrollbar__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(react_perfect_scrollbar__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _mui_material_Drawer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(7898);
+/* harmony import */ var _mui_material_Drawer__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_mui_material_Drawer__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _mui_material_Button__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(3819);
+/* harmony import */ var _mui_material_Button__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_mui_material_Button__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _mui_material_Box__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(19);
+/* harmony import */ var _mui_material_Box__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_mui_material_Box__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _mui_material_Divider__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(3646);
+/* harmony import */ var _mui_material_Divider__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_mui_material_Divider__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _mui_material_List__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(4192);
+/* harmony import */ var _mui_material_List__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_mui_material_List__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _mui_material_ListSubheader__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(9685);
+/* harmony import */ var _mui_material_ListSubheader__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_mui_material_ListSubheader__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _mui_material_styles__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(8442);
+/* harmony import */ var _mui_material_styles__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_mui_material_styles__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _mui_icons_material_ArrowBackIosNewOutlined__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(6162);
+/* harmony import */ var _mui_icons_material_ArrowBackIosNewOutlined__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_mui_icons_material_ArrowBackIosNewOutlined__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var _MainList__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(2056);
+var __webpack_async_dependencies__ = __webpack_handle_async_dependencies__([context_AuthContext__WEBPACK_IMPORTED_MODULE_4__]);
+context_AuthContext__WEBPACK_IMPORTED_MODULE_4__ = (__webpack_async_dependencies__.then ? (await __webpack_async_dependencies__)() : __webpack_async_dependencies__)[0];
 // NEXT
+
+
 
 
 
@@ -1818,7 +1869,7 @@ const closedMixin = (theme, close)=>({
             width: close ? 0 : `calc(${theme.spacing(9)} + 1px)`
         }
     });
-const Drawer = (0,styles_.styled)((Drawer_default()), {
+const Drawer = (0,_mui_material_styles__WEBPACK_IMPORTED_MODULE_12__.styled)((_mui_material_Drawer__WEBPACK_IMPORTED_MODULE_6___default()), {
     shouldForwardProp: (prop)=>prop !== "open" && prop !== "close" && prop !== "drawerWidth"
 })(({ theme , open , close , drawerWidth  })=>({
         // "& .MuiDrawer-paper": {},
@@ -1834,7 +1885,7 @@ const Drawer = (0,styles_.styled)((Drawer_default()), {
             "& .MuiDrawer-paper": closedMixin(theme, close)
         }
     }));
-const LogoContainer = (0,styles_.styled)("div", {
+const LogoContainer = (0,_mui_material_styles__WEBPACK_IMPORTED_MODULE_12__.styled)("div", {
     shouldForwardProp: (prop)=>prop !== "open"
 })(({ theme , open  })=>({
         position: "relative",
@@ -1850,33 +1901,34 @@ const LogoContainer = (0,styles_.styled)("div", {
         }
     }));
 function Sidebar(props) {
-    return /*#__PURE__*/ (0,jsx_runtime_.jsxs)(Drawer, {
+    const { user  } = (0,react__WEBPACK_IMPORTED_MODULE_1__.useContext)(context_AuthContext__WEBPACK_IMPORTED_MODULE_4__/* ["default"] */ .Z);
+    return /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)(Drawer, {
         variant: "permanent",
         open: props.toggleSidebar,
         close: props.closeSidebar,
         drawerWidth: props.drawerWidth,
         onClose: props.closeDrawer,
         children: [
-            /*#__PURE__*/ jsx_runtime_.jsx((Box_default()), {
-                children: /*#__PURE__*/ jsx_runtime_.jsx((link_default()), {
+            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_Box__WEBPACK_IMPORTED_MODULE_8___default()), {
+                children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_link__WEBPACK_IMPORTED_MODULE_2___default()), {
                     href: "/admin",
                     legacyBehavior: true,
-                    children: /*#__PURE__*/ jsx_runtime_.jsx("a", {
-                        children: /*#__PURE__*/ jsx_runtime_.jsx(LogoContainer, {
+                    children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx("a", {
+                        children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(LogoContainer, {
                             open: props.toggleSidebar,
-                            children: props.toggleSidebar ? props.darkMode ? /*#__PURE__*/ jsx_runtime_.jsx((image_default()), {
+                            children: props.toggleSidebar ? props.darkMode ? /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_image__WEBPACK_IMPORTED_MODULE_3___default()), {
                                 src: "/images/logo-white.png",
                                 alt: "Logo",
                                 width: 180,
                                 height: 50,
                                 priority: true
-                            }) : /*#__PURE__*/ jsx_runtime_.jsx((image_default()), {
+                            }) : /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_image__WEBPACK_IMPORTED_MODULE_3___default()), {
                                 src: "/images/logo-dark.png",
                                 alt: "Logo",
                                 width: 180,
                                 height: 50,
                                 priority: true
-                            }) : /*#__PURE__*/ jsx_runtime_.jsx((image_default()), {
+                            }) : /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((next_image__WEBPACK_IMPORTED_MODULE_3___default()), {
                                 src: "/images/logo.png",
                                 alt: "Logo",
                                 width: 50,
@@ -1887,76 +1939,86 @@ function Sidebar(props) {
                     })
                 })
             }),
-            /*#__PURE__*/ jsx_runtime_.jsx((external_react_perfect_scrollbar_default()), {
+            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((react_perfect_scrollbar__WEBPACK_IMPORTED_MODULE_5___default()), {
                 options: {
                     suppressScrollX: true
                 },
-                children: /*#__PURE__*/ (0,jsx_runtime_.jsxs)((Box_default()), {
+                children: /*#__PURE__*/ (0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsxs)((_mui_material_Box__WEBPACK_IMPORTED_MODULE_8___default()), {
                     sx: {
                         position: "relative"
                     },
                     children: [
-                        /*#__PURE__*/ jsx_runtime_.jsx((List_default()), {
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_List__WEBPACK_IMPORTED_MODULE_10___default()), {
                             component: "nav",
                             "aria-labelledby": "subheaderGeneral",
-                            subheader: /*#__PURE__*/ jsx_runtime_.jsx((ListSubheader_default()), {
+                            subheader: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_ListSubheader__WEBPACK_IMPORTED_MODULE_11___default()), {
                                 component: "div",
                                 id: "subheaderGeneral",
                                 children: "Permohonan"
                             }),
-                            children: /*#__PURE__*/ jsx_runtime_.jsx(MainList, {})
+                            children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_MainList__WEBPACK_IMPORTED_MODULE_14__/* .MainList */ .LZ, {
+                                userLevel: user?.level
+                            })
                         }),
-                        /*#__PURE__*/ jsx_runtime_.jsx((Divider_default()), {}),
-                        /*#__PURE__*/ jsx_runtime_.jsx((List_default()), {
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_Divider__WEBPACK_IMPORTED_MODULE_9___default()), {}),
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_List__WEBPACK_IMPORTED_MODULE_10___default()), {
                             component: "nav",
                             "aria-labelledby": "subheaderDip",
-                            subheader: /*#__PURE__*/ jsx_runtime_.jsx((ListSubheader_default()), {
+                            subheader: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_ListSubheader__WEBPACK_IMPORTED_MODULE_11___default()), {
                                 component: "div",
                                 id: "subheaderDiv",
                                 children: "DIP"
                             }),
-                            children: /*#__PURE__*/ jsx_runtime_.jsx(DipList, {})
+                            children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_MainList__WEBPACK_IMPORTED_MODULE_14__/* .DipList */ .t7, {
+                                userLevel: user?.level
+                            })
                         }),
-                        /*#__PURE__*/ jsx_runtime_.jsx((Divider_default()), {}),
-                        /*#__PURE__*/ jsx_runtime_.jsx((List_default()), {
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_Divider__WEBPACK_IMPORTED_MODULE_9___default()), {}),
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_List__WEBPACK_IMPORTED_MODULE_10___default()), {
                             component: "nav",
                             "aria-labelledby": "subheaderSetting",
-                            subheader: /*#__PURE__*/ jsx_runtime_.jsx((ListSubheader_default()), {
+                            subheader: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_ListSubheader__WEBPACK_IMPORTED_MODULE_11___default()), {
                                 component: "div",
                                 id: "subheaderSetting",
                                 children: "Setting"
                             }),
-                            children: /*#__PURE__*/ jsx_runtime_.jsx(SettingList, {})
+                            children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_MainList__WEBPACK_IMPORTED_MODULE_14__/* .SettingList */ .gM, {
+                                userLevel: user?.level
+                            })
                         }),
-                        /*#__PURE__*/ jsx_runtime_.jsx((Divider_default()), {}),
-                        /*#__PURE__*/ jsx_runtime_.jsx((List_default()), {
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_Divider__WEBPACK_IMPORTED_MODULE_9___default()), {}),
+                        /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_List__WEBPACK_IMPORTED_MODULE_10___default()), {
                             component: "nav",
                             "aria-labelledby": "subheaderChart",
-                            subheader: /*#__PURE__*/ jsx_runtime_.jsx((ListSubheader_default()), {
+                            subheader: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_ListSubheader__WEBPACK_IMPORTED_MODULE_11___default()), {
                                 component: "div",
                                 id: "subheaderChart",
                                 children: "Chart"
                             }),
-                            children: /*#__PURE__*/ jsx_runtime_.jsx(ChartList, {})
+                            children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx(_MainList__WEBPACK_IMPORTED_MODULE_14__/* .ChartList */ .pp, {
+                                userLevel: user?.level
+                            })
                         })
                     ]
                 })
             }),
-            /*#__PURE__*/ jsx_runtime_.jsx((Box_default()), {
+            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_Box__WEBPACK_IMPORTED_MODULE_8___default()), {
                 component: "div",
                 sx: {
                     flexGrow: 1
                 }
             }),
-            /*#__PURE__*/ jsx_runtime_.jsx((Button_default()), {
+            /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_material_Button__WEBPACK_IMPORTED_MODULE_7___default()), {
                 onClick: props.closeDrawer,
-                children: /*#__PURE__*/ jsx_runtime_.jsx((ArrowBackIosNewOutlined_default()), {})
+                children: /*#__PURE__*/ react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__.jsx((_mui_icons_material_ArrowBackIosNewOutlined__WEBPACK_IMPORTED_MODULE_13___default()), {})
             })
         ]
     });
 }
-/* harmony default export */ const Sidebar_Sidebar = (Sidebar);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Sidebar);
 
+__webpack_async_result__();
+} catch(e) { __webpack_async_result__(e); } });
 
 /***/ }),
 
@@ -2176,6 +2238,14 @@ module.exports = require("@mui/icons-material/Add");
 
 /***/ }),
 
+/***/ 6162:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("@mui/icons-material/ArrowBackIosNewOutlined");
+
+/***/ }),
+
 /***/ 9233:
 /***/ ((module) => {
 
@@ -2384,11 +2454,27 @@ module.exports = require("@mui/material/Link");
 
 /***/ }),
 
+/***/ 4192:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("@mui/material/List");
+
+/***/ }),
+
 /***/ 8315:
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("@mui/material/ListItemText");
+
+/***/ }),
+
+/***/ 9685:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("@mui/material/ListSubheader");
 
 /***/ }),
 
@@ -2686,6 +2772,14 @@ module.exports = import("axios");;
 "use strict";
 module.exports = import("react-toastify");;
 
+/***/ }),
+
+/***/ 4612:
+/***/ ((module) => {
+
+"use strict";
+module.exports = import("socket.io-client");;
+
 /***/ })
 
 };
@@ -2695,7 +2789,7 @@ module.exports = import("react-toastify");;
 var __webpack_require__ = require("../webpack-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [3121,5675,1664,39], () => (__webpack_exec__(8484)));
+var __webpack_exports__ = __webpack_require__.X(0, [3121,5675,1664,39,7425], () => (__webpack_exec__(8484)));
 module.exports = __webpack_exports__;
 
 })();

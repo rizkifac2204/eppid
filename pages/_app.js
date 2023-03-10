@@ -27,6 +27,8 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient();
 
+import { WhatsappContextProvider } from "context/whatsappContext";
+
 function MyApp({ Component, pageProps }) {
   return (
     <>
@@ -36,28 +38,30 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <ToastContainer />
       <noscript>Browser Anda Tidak Mendukung Javascript</noscript>
-      <QueryClientProvider client={queryClient}>
-        {Component.auth ? (
-          <AuthContextProvider>
-            <ContextProvider>
-              <Layout>
+      <WhatsappContextProvider>
+        <QueryClientProvider client={queryClient}>
+          {Component.auth ? (
+            <AuthContextProvider>
+              <ContextProvider>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </ContextProvider>
+            </AuthContextProvider>
+          ) : (
+            <>
+              {Component.public ? (
+                <PublicLayout>
+                  <Component {...pageProps} />
+                </PublicLayout>
+              ) : (
                 <Component {...pageProps} />
-              </Layout>
-            </ContextProvider>
-          </AuthContextProvider>
-        ) : (
-          <>
-            {Component.public ? (
-              <PublicLayout>
-                <Component {...pageProps} />
-              </PublicLayout>
-            ) : (
-              <Component {...pageProps} />
-            )}
-          </>
-        )}
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+              )}
+            </>
+          )}
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </WhatsappContextProvider>
     </>
   );
 }

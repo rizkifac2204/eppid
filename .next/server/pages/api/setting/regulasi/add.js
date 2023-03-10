@@ -100,6 +100,13 @@ const config = {
         });
         const { filename  } = req.file;
         const { kategori_id , nomor , judul , tentang  } = req.body;
+        // hanya admin yang boleh input
+        if (req.session.user.level !== 1) {
+            (0,services_UploadService__WEBPACK_IMPORTED_MODULE_2__/* .DeleteUpload */ ._0)("./public/regulasi", filename);
+            return res.status(401).json({
+                message: "Anda Tidak Diizinkan Melakukan Aksi ini"
+            });
+        }
         const dataForInsert = {
             kategori_id,
             nomor,
@@ -137,6 +144,26 @@ const config = {
 __webpack_async_result__();
 } catch(e) { __webpack_async_result__(e); } });
 
+/***/ }),
+
+/***/ 5920:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Z": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const knex = __webpack_require__(514)({
+    client: "mysql",
+    connection: {
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASS,
+        database: process.env.DB_NAME
+    }
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (knex);
+
+
 /***/ })
 
 };
@@ -146,7 +173,7 @@ __webpack_async_result__();
 var __webpack_require__ = require("../../../../webpack-api-runtime.js");
 __webpack_require__.C(exports);
 var __webpack_exec__ = (moduleId) => (__webpack_require__(__webpack_require__.s = moduleId))
-var __webpack_exports__ = __webpack_require__.X(0, [4383,1820,2679,8595], () => (__webpack_exec__(8869)));
+var __webpack_exports__ = __webpack_require__.X(0, [4383,1820,9733,8595], () => (__webpack_exec__(8869)));
 module.exports = __webpack_exports__;
 
 })();
